@@ -1,0 +1,14 @@
+Beginner's guide to farm
+
+Contents:
+
+All about farm:
+    What is farm
+    When to use farm
+    Farm defaults
+    Installing programs on farm
+
+*nix computer tips:
+    Bash/Where is my GUI?
+    R basics [input/output]
+    Python basics
