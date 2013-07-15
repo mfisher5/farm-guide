@@ -5,10 +5,18 @@ Contents:
 All about farm:
     What is farm
     When to use farm
-    Farm defaults
-    Installing programs on farm
+    Farm defaults [what's installed]
+    Installing programs on farm [./configure prefix, make, make install]
+    Special farm things [module load, $JOB_ID, $SGE_TASK_ID]
+    Submit jobs to farm [qsub, qstat, options, killing jobs]
 
 *nix computer tips:
-    Bash/Where is my GUI?
-    R basics [input/output]
-    Python basics
+    Bash/Where is my GUI? [no more mouse, moving around, unix philosophy]
+    R basics [input/output especially, herefiles, pull from distributions, 
+                    creating your own distribution, things people in the lab need]
+    Python basics [link to Learn Python the Hard Way?]
+    Git better: share your work! [git is installed on farm, init/add/commit/push/pull]
+    Special *nix things [screen, wc, more on pipes, convince people to learn awk]
+    
+    
+What is farm?
