@@ -12,11 +12,111 @@ All about farm:
 
 *nix computer tips:
     Bash/Where is my GUI? [no more mouse, moving around, unix philosophy]
-    R basics [input/output especially, herefiles, pull from distributions, 
-                    creating your own distribution, things people in the lab need]
+    R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
     Python basics [link to Learn Python the Hard Way?]
     Git better: share your work! [git is installed on farm, init/add/commit/push/pull]
-    Special *nix things [screen, wc, more on pipes, convince people to learn awk]
+    Special *nix things [screen, wc, more on pipes, convince people to learn awk, /dev/null]
     
     
-What is farm?
+All about farm:
+
+What is farm:
+Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
+
+When to use farm:
+
+Farm Defaults:
+Farm comes with a lot of software preinstalled. Here's a list of the most commonly used ones:
+gcc
+Git
+libsequence
+Matlab
+Perl
+Python
+R
+
+Installing programs on farm:
+When using farm, you're probably going to need to install some software. Since farm is a Linux computer, it follows much the same procedure as other Linux computers. The main difference is that you can't install things into the default directory. This is because it's located in /bin and you need root access in order to do that. The solution is to change where the binary file is located:
+
+1) Download software:
+$ wget http://www.best-software-ever.com/thesis-in-a-box.tar.gz
+
+2) Untar it:
+$ tar xvzf thesis-in-a-box.tar.gz
+
+3) Move to your new directory:
+$ cd thesis-in-a-box
+
+4) Configure the program:
+$ ./configure --prefix=/home/user/[path for binary executable]/
+
+5) Compile the program:
+$ make
+
+6) Move it to the path you specified:
+$ make install
+
+Note: this only works for software that is packaged to be installed this way. Always make sure to read the README or INSTALL files to ensure you're doing it right.
+
+Then, to run the program just type in the path:
+$ /home/user/programs/thesis
+
+Now, that's a lot to type every time you want to run a program. There's a better way. Actually there are multiple ways.
+
+1) Alias:
+Bash has something called aliases, which let you put your own shorter (usually) command to stand for another command. For example, I could create an alias for my thesis program called "graduate" which runs "/home/user/programs/thesis". I could also create an alias for "ls -a" (show hidden files as well) called "la". To do this, you need to create a file called ".bash_profile"
+
+a) Make sure you're in the home directory
+$ cd
+
+b) Create .bash_profile
+$ touch .bash_profile
+
+c) Open it up in your favorite text editor
+$ nano .bash_profile
+
+d) Create the aliases by typing this in:
+alias graduate="/home/user/programs/thesis"
+alias la="ls -a"
+
+e) Save the file:
+In nano this is control+O (WriteOut)
+
+f) Reload bash by logging out or with this command:
+$ source ~/.bash_profile
+
+2) Add to path:
+When you type in a command into bash, bash looks for a binary file matching that command. The places it looks by default on farm are: 
+/share/apps/ge-6.2/bin/lx24-amd64
+/usr/kerberos/bin
+/usr/local/bin
+/bin
+/usr/bin
+
+We can shorten the command we have to type by adding the binary file to the path. To do this, we add it to the .bash_profile.
+
+a) Make sure you're in the home directory
+$ cd
+
+b) Create .bash_profile
+$ touch .bash_profile
+
+c) Open it up in your favorite text editor
+$ nano .bash_profile
+
+d) Add to your path by typing this in:
+PATH=$PATH:/home/user/programs/
+export PATH
+
+e) Save the file:
+In nano this is control+O (WriteOut)
+
+f) Reload bash by logging out or with this command:
+$ source ~/.bash_profile
+
+This will add all binary files in /home/user/programs/ including the one we want, "thesis". To see what is in your path, type this into bash:
+$ echo $PATH
+
+To add more folders to your path, just append it to the line with a colon in the beginning:
+PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
+export PATH
