@@ -120,3 +120,27 @@ $ echo $PATH
 To add more folders to your path, just append it to the line with a colon in the beginning:
 PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
 export PATH
+
+Special Farm Things:
+Farm has a number of things that make it unique, not dissimilar from a snowflake. These are things you won't see on many Linux distributions and if you try to do it on them, you might get an angry message telling you to do something you're good at (don't listen to it you're beautiful). 
+
+Modules:
+
+This package allows system administrators to update the system libraries and other core programs without breaking your code or scripts. Modules contain the information that the shell needs to locate programs and libraries without getting confused about different versions and different files. For you, this means that before using something like gcc, you need to load it:
+$ module load gcc
+Module GCC 4.5.0 Loaded.
+
+To see what modules are available, type:
+$ module avail
+
+Any one of these modules can be loaded and should be. The special farm thing here is that if you run python, for example, without loading the module, you'll run version 2.4.3. However, if you load the python module, you will get 2.7.3. This becomes an issue when you run python from a script but forget to load the module because you'll be running an old version of python. So remember, if you're using a preinstalled program, make sure you load the module. 
+
+Built-in variables:
+
+When you submit a job on farm, the Sun Grid Engine gives you two variables that change according to some parameters. One is the variable "$SGE_TASK_ID". When running an array of jobs, this variable corresponds to a particular task. Each job in the array has a different value for $SGE_TASK_ID. 
+
+Next, there is "$JOB_ID". This variable changes every time you submit a job. Therefore, when you submit an array of jobs, each job will have the same $JOB_ID, but each one will have a different $SGE_TASK_ID. These variables can be used in conjunction to name output files. For example, you can submit a job like this:
+
+sfs_code 1 1 > out.$JOB_ID.$SGE_TASK_ID
+
+This will save the output in a file named something like this: out.83917.1
