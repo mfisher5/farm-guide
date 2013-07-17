@@ -4,7 +4,6 @@ Contents:
 
 All about farm:
     What is farm
-    When to use farm
     Farm defaults [what's installed]
     Installing programs on farm [./configure prefix, make, make install]
     Special farm things [module load, $JOB_ID, $SGE_TASK_ID]
@@ -22,8 +21,6 @@ All about farm:
 
 What is farm:
 Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
-
-When to use farm:
 
 Farm Defaults:
 Farm comes with a lot of software preinstalled. Here's a list of the most commonly used ones:
@@ -144,3 +141,46 @@ Next, there is "$JOB_ID". This variable changes every time you submit a job. The
 sfs_code 1 1 > out.$JOB_ID.$SGE_TASK_ID
 
 This will save the output in a file named something like this: out.83917.1
+
+Submitting Jobs to farm [copy and paste more stuff from current wiki]:
+Speaking of submitting jobs, you are probably going to want to do that. The farm cluster uses the Sun Grid Engine (SGE) to distribute jobs across its 39(?) nodes. When you run simulations, you want them to run on these nodes rather than the one you're logged in to (which is called the head). To submit a job simply type:
+$ qsub myjob.sh
+
+The qsub command has a number of options, many of which are necessary: [expand on this from the current wiki] 
+
+-S:
+This option tells qsub what shell you're using. You will probably want to use bash:
+-S /bin/bash
+
+-cwd:
+This tells qsub to run the command from your current working directory. 
+
+-e:
+This tells qsub where to put the error log files. If you don't want to save them, put them in /dev/null:
+-e /dev/null
+
+-o:
+This tells qsub where to put the output log files. If you don't want to save them, or if you are creating your own output files, put them in /dev/null:
+-o /dev/null
+
+-t:
+This tells qsub that you are submitting an array of jobs. It will run the script you send it multiple times. To specify how many times, use a range. The max number of jobs in an array is 50,000:
+-t 1-10
+
+-m: [add this in]
+
+Output to many files vs one:
+When using qsub, you are going to want to save the output of each simulation in a different file. This is because when multiple processors write to the same file, bad and funky things happen. James Brown may be pleased, but you will not be. To achieve this, use the built-in variables ($SGE_TASK_ID, $JOB_ID) to number your output files.
+
+Checking up on jobs:
+SGE comes with a command called qstat which will tell you the progress of your job:
+$ qstat
+
+You can also check the status of a particular job:
+$ qstat -j [job-id]
+
+You can delete a job:
+$ qdel [job-id]
+
+Log into a compute node:
+$ qrsh
