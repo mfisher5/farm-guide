@@ -4,6 +4,7 @@ Contents:
 
 All about farm:
     What is farm
+    Setting up your account
     Farm defaults [what's installed]
     Installing programs on farm [./configure prefix, make, make install]
     Special farm things [module load, $JOB_ID, $SGE_TASK_ID]
@@ -22,6 +23,49 @@ All about farm:
 What is farm:
 Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
 
+Setting up your account:
+In order to create an account on farm you need to send the CSE Help department your SSH public key. This key is a file created on your computer (not farm) that identifies your computer as your computer to farm. It's like a password that you don't need to type in. The process for generating your SSH public key is as follows:
+
+Mac:
+a. Open the terminal (Applications -> Utilities -> Terminal)
+b. Generate your key:
+ssh-keygen -t rsa
+
+c. Accept the default location by pressing Enter.
+
+d. Type in a passphrase.
+
+e. Your system will now generate a key pair:
+Your identification has been saved in /Users/myname/.ssh/id_rsa.
+Your public key has been saved in /Users/myname/.ssh/id_rsa.pub.
+The key fingerprint is:
+ae:89:72:0b:85:da:5a:f4:7c:1f:c2:43:fd:c6:44:38 myname@mymac.local
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|         .       |
+|        E .      |
+|   .   . o       |
+|  o . . S .      |
+| + + o . +       |
+|. + o = o +      |
+| o...o * o       |
+|.  oo.o .        |
++-----------------+
+
+WARNING: There are two keys generated: private and public. The public key is sent to the farm and the private key stays where it is. NEVER SHARE YOUR PRIVATE KEY. Any computer with your private key can log in to your account. Treat your private key like a password.
+
+f. Your keys are located in the .ssh folder in your home directory:
+/Users/[username]/.ssh
+
+g. Your public key is in a file called id_rsa.pub. Attach this file to the email you send to CSE Help.
+
+Windows [someone who knows how to do this in windows should write this section!]:
+a. Get a Mac.
+
+b. Follow the steps above.
+
+
 Farm Defaults:
 Farm comes with a lot of software preinstalled. Here's a list of the most commonly used ones:
 gcc
@@ -39,7 +83,7 @@ When using farm, you're probably going to need to install some software. Since f
 $ wget http://www.best-software-ever.com/thesis-in-a-box.tar.gz
 
 2) Untar it:
-$ tar xvzf thesis-in-a-box.tar.gz
+$ tar -xvzf thesis-in-a-box.tar.gz
 
 3) Move to your new directory:
 $ cd thesis-in-a-box
