@@ -67,7 +67,7 @@ b. Follow the steps above.
 
 
 Farm Defaults:
-Farm comes with a lot of software preinstalled. Here's a list of the most commonly used ones:
+Farm comes with a lot of software preinstalled. Here's a list of some of the most commonly used ones:
 gcc
 Git
 libsequence
@@ -102,10 +102,10 @@ Note: this only works for software that is packaged to be installed this way. Al
 Then, to run the program just type in the path:
 $ /home/user/programs/thesis
 
-Now, that's a lot to type every time you want to run a program. There's a better way. Actually there are multiple ways.
+Now, that's a lot to type every time you want to run a program. There are multiple better ways.
 
 1) Alias:
-Bash has something called aliases, which let you put your own shorter (usually) command to stand for another command. For example, I could create an alias for my thesis program called "graduate" which runs "/home/user/programs/thesis". I could also create an alias for "ls -a" (show hidden files as well) called "la". To do this, you need to create a file called ".bash_profile"
+Bash has something called aliases, which let you put your own shorter (usually) command to stand for another command. For example, I could create an alias for my thesis program called "graduate" which runs "/home/user/programs/thesis". I could also create an alias for "ls -a" (show hidden files) called "la". To do this, you need to create a file called ".bash_profile"
 
 a) Make sure you're in the home directory
 $ cd
