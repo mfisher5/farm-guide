@@ -11,7 +11,7 @@ All about farm:
     Submit jobs to farm [qsub, qstat, options, killing jobs]
 
 *nix computer tips:
-    Bash/Where is my GUI? [no more mouse, moving around, unix philosophy]
+    Bash [no more mouse, moving around, unix philosophy]
     R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
     Python basics [link to Learn Python the Hard Way?]
     Git better: share your work! [git is installed on farm, init/add/commit/push/pull]
@@ -228,3 +228,17 @@ $ qdel [job-id]
 
 Log into a compute node:
 $ qrsh
+
+*nix computer tips:
+This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
+
+Bash:
+In order to effectively use the farm computer, you need to know how to move around in bash. Use this course to learn how: http://cli.learncodethehardway.org/book/
+
+R:
+
+Python:
+
+Git:
+
+Special Unix things:
