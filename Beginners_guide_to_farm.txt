@@ -60,10 +60,8 @@ f. Your keys are located in the .ssh folder in your home directory:
 
 g. Your public key is in a file called id_rsa.pub. Attach this file to the email you send to CSE Help.
 
-Windows [someone who knows how to do this in windows should write this section!]:
-a. Get a Mac.
-
-b. Follow the steps above.
+Windows:
+a. Follow the steps here: http://siteadmin.gforge.inria.fr/ssh_windows.html
 
 
 Farm Defaults:
