@@ -5,17 +5,17 @@ Contents:
 All about farm:
     What is farm
     Setting up your account
-    Farm defaults [what's installed]
-    Installing programs on farm [./configure prefix, make, make install]
-    Special farm things [module load, $JOB_ID, $SGE_TASK_ID]
-    Submit jobs to farm [qsub, qstat, options, killing jobs]
-
+    Farm defaults
+    Installing programs on farm [installing msstats: need libsequence loaded]
+    Special farm things [memory usage, CPU use limits, BigMem use, NSF usage, scratch usage, tentakel]
+    Submit jobs to farm 
+    
 *nix computer tips:
-    Bash [no more mouse, moving around, unix philosophy]
+    Bash 
     R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
-    Python basics [link to Learn Python the Hard Way?]
-    Git better: share your work! [git is installed on farm, init/add/commit/push/pull]
-    Special *nix things [screen, wc, more on pipes, convince people to learn awk, /dev/null]
+    Python basics
+    Git 
+    Special *nix things [convince people to learn awk, /dev/null]
     
     
 All about farm:
@@ -217,7 +217,25 @@ This tells qsub where to put the output log files. If you don't want to save the
 This tells qsub that you are submitting an array of jobs. It will run the script you send it multiple times. To specify how many times, use a range. The max number of jobs in an array is 50,000:
 -t 1-10
 
--m: [add this in]
+-help:
+
+Prints a listing of all options.
+
+-j y|n:
+
+Specifies whether or not the standard error stream of the job is merged into the standard output stream. If both the -j y and the -e options are present, Grid Engine sets, but ignores the error-path attribute.
+
+-m b|e|a|s|n,…:
+
+Defines or redefines under which circumstances mail is to be sent to the job owner or to the users defined with the -M option described below. The option arguments have the following meaning: 'b' Mail is sent at the beginning of the job. 'e' Mail is sent at the end of the job. 'a' Mail is sent when the job is aborted or rescheduled. 's' Mail is sent when the job is suspended. 'n' No mail is sent. Currently no mail is sent when a job is suspended.
+
+-M user[@host],…
+
+Defines or redefines the list of users to which the server that executes the job has to send mail, if the server sends mail about the job. Default is the job owner at the originating host. You can use this to add your email address for updates or information about your jobs. For example, “qsub -M johndoe@example.com stupid.sh” will send email about the job status of the stupid.sh script to johndoe@example.com.
+
+-N name
+
+The name of the job. The name can be any printable set of characters, starting with an alphabetic character. If the -N option is not present Grid Engine assigns the name of the job script to the job after any directory pathname has been removed from the script-name.
 
 Output to many files vs one:
 When using qsub, you are going to want to save the output of each simulation in a different file. This is because when multiple processors write to the same file, bad and funky things happen. James Brown may be pleased, but you will not be. To achieve this, use the built-in variables ($SGE_TASK_ID, $JOB_ID) to number your output files.
@@ -234,6 +252,38 @@ $ qdel [job-id]
 
 Log into a compute node:
 $ qrsh
+
+Things to watch for:
+
+NFS Usage
+
+The network filesystem (NFS) is what the system uses to communicate between the head node and compute nodes. Overloading the NFS can cause work to slow down dramatically or even cause nodes to crash. Remember that all your files are stored on the head node, so any jobs that do heavy reading/writing require that the CPU on the compute node is writing over the network (using NFS) to the headnode. Avoid heavy read/write as much as possible, for example, by writing to files on the compute node and moving them to the head node when you're done. NFS usage may spike to >150Mb when transferring big files or starting a run, but if it stays constant at >10Mb your job probably needs to be re-thought, as this will likely cause problems for other users.
+
+Memory
+
+Each compute node has 24G RAM. If you are using more than 1.5G RAM per job you need to use something like ”-pe threaded” to request more CPU so you do not end up using other people's resources. Check the overall memory usage of your runs; using too much memory can cause individual nodes to go down.
+
+Space on nodes
+
+Each compute node has a 16G hard drive. This is available in /state/partition1/ . It is advisable to create your own directory there, e.g. /state/partition1/jri . You can use tentakel to do this on all nodes at once. It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the $JOB_ID variable. This prevents overwriting files. Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
+
+To avoid causing problems with the NFS, in general:
+
+* Make bigger tasks (so submit 500-1000 instead of 25-75000 * Throttle your qsubs, if in a loop add a sleep so submitting 25-75k takes say 10 minutes instead of 10 seconds.
+
+To check on a big job:
+
+* Run top. Watch for any of the following:
+
+Does the load average spike?
+
+Does the %wa (3rd line) spike?
+
+Does any process balloon in memory usage? (sort by memory use with M)
+
+Does any process saturate at 100% cpu usage? Which?
+
+Does swap usage increase?
 
 *nix computer tips:
 This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
