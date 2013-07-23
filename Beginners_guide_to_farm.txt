@@ -165,6 +165,14 @@ export PATH
 Special Farm Things:
 Farm has a number of things that make it unique, not dissimilar from a snowflake. These are things you won't see on many Linux distributions and if you try to do it on them, you might get an angry message telling you to do something you're good at (don't listen to it you're beautiful). 
 
+Max number of command line arguments:
+
+The maximum number of arguments in any command is 131072. If you are getting errors from bash saying you have too many arguments, try and specify the maximum number of arguments as 131072. For example, in removing a bunch of files:
+
+$ find -name "[name].*" | xargs -n131072 rm
+
+This command will remove all files that match the pattern "[name].*". * is a wildcard character.
+ 
 Modules:
 
 This package allows system administrators to update the system libraries and other core programs without breaking your code or scripts. Modules contain the information that the shell needs to locate programs and libraries without getting confused about different versions and different files. For you, this means that before using something like gcc, you need to load it:
@@ -235,10 +243,45 @@ This section contains tips and information applicable to any Unix-based computer
 Bash:
 In order to effectively use the farm computer, you need to know how to move around in bash. Use this course to learn how: http://cli.learncodethehardway.org/book/
 
+[add specific things that people in the lab need/use]
+
 R:
 
-Python:
+Python: 
+Learn from here: http://learnpythonthehardway.org/book/
+
+[add specific things that people in the lab need/use]
 
 Git:
 
+$ git init
+
+$ git clone [url]
+
+$ git pull
+
+$ git add
+
+$ git commit -m "[info]"
+
+$ git push
+
+
 Special Unix things:
+
+Screen:
+Screen is especially useful for farm because it lets you run things that take a while without qsubbing (Be careful not to run things that take hours and lots of memory though). Screen lets you open another session on the farm which you can detach from. This lets whatever program or script you have running keep running even after you log out. To open a new screen, type:
+
+$ screen
+
+Now you'll have a new bash session. To detach from that screen, press they keys Control-a, d. To see what screens you have detached, use the -ls option:
+
+$ screen -ls
+
+This will output a list of existing screens along with a number corresponding to each screen. In order to switch to a particular screen, use the -r option along with that screen's number:
+
+$ screen -r [number]
+
+To find out more, use the manual page:
+
+$ man screen
