@@ -6,8 +6,8 @@ All about farm:
     What is farm
     Setting up your account
     Farm defaults
-    Installing programs on farm [installing msstats: need libsequence loaded, downloading from github, java]
-    Special farm things [memory usage, CPU use limits, BigMem use, NSF usage, scratch usage, tentakel]
+    Installing programs on farm
+    Special farm things [scratch usage, tentakel]
     Submit jobs to farm 
     
 Unix computer tips:
@@ -159,6 +159,34 @@ $ echo $PATH
 To add more folders to your path, just append it to the line with a colon in the beginning:
 PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
 export PATH
+
+Case study: msstats:
+Msstats is a program that uses libsequence. It's useful to see how this is installed because it requires libraries to be loaded during installation. 
+
+1) Download msstats source code:
+$ wget http://molpopgen.org/software/msstats/msstats-0.3.1.tar.gz
+
+2) Untar:
+$ tar -xvzf msstats-0.3.1.tar.gz
+
+3) cd to new directory:
+$ cd msstats-0.3.1
+
+4) Read the README:
+$ less README
+
+5) Load the required modules:
+$ module load gcc
+$ module load libsequence
+
+6) Provide configure with information about libsequence and run configure (notice the prefix option):
+$ CPPFLAGS=-I$LIBSEQUENCE/include LDFLAGS=-L$LIBSEQUENCE/lib ./configure --prefix=/home/[user]/programs/
+
+7) Make:
+$ make
+
+8) Make install:
+$ make install 
 
 Programs from Github:
 Programs, pipelines, and scripts from Github work much the same way as software from other sources. One key difference is in acquiring it. There are two main ways to get software from Github: cloning and downloading a zip. The advantage of cloning is that if the software updates, you just need to pull the changes and reinstall and you are updated. With the zip file, you need to remove the folder and redownload it when there in an update. However, sometimes software isn't updated frequently so you don't need to worry about updates. 
@@ -354,18 +382,35 @@ Learn from here: http://learnpythonthehardway.org/book/
 [add specific things that people in the lab need/use]
 
 Git:
+Git is useful because it allows you to share your programs/scripts with minimal effort and it backs up your programs in case you do something dumb and "rm -rf ./" your source code (please don't run that code). 
 
+Git is already installed on farm. To create a new repository, make a new folder:
+$ mkdir i-am-awesome
+
+cd to that directory and type in:
 $ git init
 
-$ git clone [url]
+Now you have a new git repository. Now you need to connect it to your Github account:
+$ git remote add origin https://github.com/[username]/[repository-name].git
 
-$ git pull
+Now you can add files to the repository with the git add command:
+$ git add [file1] [file2]
 
-$ git add
+You can add multiple files at once separated with a space or if you're lazy you can wildcard:
+$ git add *
 
+Now to send your files to Github, you need to commit them:
 $ git commit -m "[info]"
 
+And finally, push them to the server:
 $ git push
+
+If a repository exists, you can add it to your computer by cloning it (this is explained in depth in the software installation section):
+$ git clone [url]
+
+If you are working on multiple computers or with other people make sure you pull the changes before you start working or else you risk losing your changes or needing to merge, which can get ugly:
+$ git pull
+
 
 
 Special Unix things:
