@@ -15,7 +15,7 @@ Unix computer tips:
     R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
     Python basics
     Git 
-    Special Unix things [convince people to learn awk, /dev/null]
+    Special Unix things [WriteFailed: Broken Pipe, convince people to learn awk, /dev/null]
     
     
 All about farm:
@@ -75,6 +75,8 @@ Python
 R
 
 Installing programs on farm:
+
+C and C++:
 When using farm, you're probably going to need to install some software. Since farm is a Linux computer, it follows much the same procedure as other Linux computers. The main difference is that you can't install things into the default directory. This is because it's located in /bin and you need root access in order to do that. The solution is to change where the binary file is located:
 
 1) Download software:
@@ -188,6 +190,26 @@ $ make
 8) Make install:
 $ make install 
 
+Java programs:
+Using Java programs is easy because Java is inherently cross-platform. Java works by creating a layer between the computer and the program called the Java Virtual Machine (JVM). The JVM is platform specific, but any java executable file (.jar) can be run. This way, software people only have to send out 1 file which can be used on (almost) any platform. This also means that you don't have to compile the Java program (the software provider already did it for you), you just need to run it. A short example involving BEAGLE follows:
+
+a) cd to the parent directory:
+$ cd programs
+
+b) Download BEAGLE with wget:
+$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
+
+c) Run BEAGLE according to the instructions provided here: http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf
+For example:
+$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
+
+As you can see, Java programs don't really need to be "installed", they just need to exist. If you do need to compile the program, you will need to follow the instructions provided. If the source code contains a file called "build.xml" it probably uses ant (which is similar to make). If this is the case, you can create a .jar file simply by typing:
+
+$ ant compile jar
+
+Note: I haven't tested these myself. More information about ant is available here: http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
+
+
 Programs from Github:
 Programs, pipelines, and scripts from Github work much the same way as software from other sources. One key difference is in acquiring it. There are two main ways to get software from Github: cloning and downloading a zip. The advantage of cloning is that if the software updates, you just need to pull the changes and reinstall and you are updated. With the zip file, you need to remove the folder and redownload it when there in an update. However, sometimes software isn't updated frequently so you don't need to worry about updates. 
 
@@ -216,29 +238,6 @@ d) Unzip this folder with unzip:
 $ unzip [repository]
 
 e) Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
-
-Java programs:
-Using Java programs is easy because Java is inherently cross-platform. Java works by creating a layer between the computer and the program called the Java Virtual Machine (JVM). The JVM is platform specific, but any java executable file (.jar) can be run. This way, software people only have to send out 1 file which can be used on (almost) any platform. This also means that you don't have to compile the Java program (the software provider already did it for you), you just need to run it. A short example involving BEAGLE follows:
-
-a) cd to the parent directory:
-$ cd programs
-
-b) Download BEAGLE with wget:
-$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
-
-c) Run BEAGLE according to the instructions provided here: http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf
-For example:
-$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
-
-As you can see, Java programs don't really need to be "installed", they just need to exist. If you do need to compile the program, you will need to follow the instructions provided. If the source code contains a file called "build.xml" it probably uses ant (which is similar to make). If this is the case, you can create a .jar file simply by typing:
-
-$ ant compile jar
-
-Note: I haven't tested these myself. More information about ant is available here: http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
-
-
-Running Java programs:
-So if installing Java programs isn't hard, 
 
 
 Special Farm Things:
@@ -365,6 +364,12 @@ Does any process balloon in memory usage? (sort by memory use with M)
 Does any process saturate at 100% cpu usage? Which?
 
 Does swap usage increase?
+
+
+
+
+
+
 
 Unix computer tips:
 This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
