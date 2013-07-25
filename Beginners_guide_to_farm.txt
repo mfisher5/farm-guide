@@ -6,16 +6,16 @@ All about farm:
     What is farm
     Setting up your account
     Farm defaults
-    Installing programs on farm [installing msstats: need libsequence loaded]
+    Installing programs on farm [installing msstats: need libsequence loaded, downloading from github, java]
     Special farm things [memory usage, CPU use limits, BigMem use, NSF usage, scratch usage, tentakel]
     Submit jobs to farm 
     
-*nix computer tips:
+Unix computer tips:
     Bash 
     R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
     Python basics
     Git 
-    Special *nix things [convince people to learn awk, /dev/null]
+    Special Unix things [convince people to learn awk, /dev/null]
     
     
 All about farm:
@@ -160,6 +160,59 @@ To add more folders to your path, just append it to the line with a colon in the
 PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
 export PATH
 
+Programs from Github:
+Programs, pipelines, and scripts from Github work much the same way as software from other sources. One key difference is in acquiring it. There are two main ways to get software from Github: cloning and downloading a zip. The advantage of cloning is that if the software updates, you just need to pull the changes and reinstall and you are updated. With the zip file, you need to remove the folder and redownload it when there in an update. However, sometimes software isn't updated frequently so you don't need to worry about updates. 
+
+Cloning:
+
+a) Go to the parent directory of where you want the software installed
+$ cd programs
+
+b) Visit the Github repository and on the very right there will be a text box that says "HTTPS clone URL" and it will contain a link that looks like this: https://github.com/[user]/[repository].git. Copy that link to the clipboard
+
+c) Back in farm, clone the repository:
+$ git clone https://github.com/[user]/[repository].git
+
+d) Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
+
+Downloading a zip:
+a) Go to the parent directory of where you want the software installed
+$ cd programs
+
+b) Visit the Github repository and on the very right there is a button that says "Download zip". Right click this link and click "copy link". 
+
+c) Back in farm, download the zip with wget:
+$ wget https://github.com/[user]/[repository]/archive/[branch].zip
+
+d) Unzip this folder with unzip:
+$ unzip [repository]
+
+e) Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
+
+Java programs:
+Using Java programs is easy because Java is inherently cross-platform. Java works by creating a layer between the computer and the program called the Java Virtual Machine (JVM). The JVM is platform specific, but any java executable file (.jar) can be run. This way, software people only have to send out 1 file which can be used on (almost) any platform. This also means that you don't have to compile the Java program (the software provider already did it for you), you just need to run it. A short example involving BEAGLE follows:
+
+a) cd to the parent directory:
+$ cd programs
+
+b) Download BEAGLE with wget:
+$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
+
+c) Run BEAGLE according to the instructions provided here: http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf
+For example:
+$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
+
+As you can see, Java programs don't really need to be "installed", they just need to exist. If you do need to compile the program, you will need to follow the instructions provided. If the source code contains a file called "build.xml" it probably uses ant (which is similar to make). If this is the case, you can create a .jar file simply by typing:
+
+$ ant compile jar
+
+Note: I haven't tested these myself. More information about ant is available here: http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
+
+
+Running Java programs:
+So if installing Java programs isn't hard, 
+
+
 Special Farm Things:
 Farm has a number of things that make it unique, not dissimilar from a snowflake. These are things you won't see on many Linux distributions and if you try to do it on them, you might get an angry message telling you to do something you're good at (don't listen to it you're beautiful). 
 
@@ -167,9 +220,9 @@ Max number of command line arguments:
 
 The maximum number of arguments in any command is 131072. If you are getting errors from bash saying you have too many arguments, try and specify the maximum number of arguments as 131072. For example, in removing a bunch of files:
 
-$ find -name "[name].*" | xargs -n131072 rm
+$ find -name "[name_of_file].*" | xargs -n131072 rm
 
-This command will remove all files that match the pattern "[name].*". * is a wildcard character.
+This command will remove all files that match the pattern "[name_of_file].*". * is a wildcard character. The -name is different from [name_of_file] and should not be substituted!
  
 Modules:
 
@@ -285,7 +338,7 @@ Does any process saturate at 100% cpu usage? Which?
 
 Does swap usage increase?
 
-*nix computer tips:
+Unix computer tips:
 This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
 
 Bash:
@@ -316,6 +369,28 @@ $ git push
 
 
 Special Unix things:
+
+What language should I use?
+The world of computer languages is confusing because of the seemingly arbitrary distinctions and made up words that make every language seem like the new hot stuff. I'm going to try and clear up some of the confusion.
+
+Two of the major camps of languages are scripting languages and compiled languages (scripting languages are also called interpreted languages). Scripting languages have something called an interpreter which runs while your script is running and translates your instructions on the fly to the computer. Examples of scripting languages include perl, Python, R, Ruby, and Javascript. Compiled languages on the other hand, have something called a compiler which translates your program into machine code (or binary: 00101010010). The compiler is no longer needed at this point and your computer can just run your compiled code (the binary file). Examples of compiled languages are: C, C++, Java, Fortran, COBOL.
+
+There are a few notable results of the difference between compiled and scripting languages:
+
+1) Scripts are usually slower than their compiled counterparts: this is because the interpreter must run while the script is running so it takes up more memory (and probably other reasons).
+
+2) Scripts are easier to write than compiled programs: when you compile a program, you need to tell the computer __everything__, including where to start. This is why C, C++, and Java programs have a "main" method or class. Generally speaking, you need to be more careful and know a lot about the language you're programming in when writing in a compiled language. Scripts on the other hand can figure most things out on their own and run top to bottom (unless told otherwise). 
+
+3) Scripts are cross platform: or more accurately, they are more cross platform than compiled programs. This is because when programs are compiled, they are compiled according to the processor instructions, which change from computer to computer. This is why you can't install iOS on your desktop computer (also because Apple would sue you so hard). 
+
+So what do I pick?
+Scripts for short things like manipulating files and summarizing data, programs for larger projects that do complex transformations or simulations (if you're really in doubt, pick scripts.)
+
+Object orientation?
+I refer you to this: http://learnpythonthehardway.org/book/ex42.html
+Any other questions can be answered with Google and mediation.
+
+
 
 Screen:
 Screen is especially useful for farm because it lets you run things that take a while without qsubbing (Be careful not to run things that take hours and lots of memory though). Screen lets you open another session on the farm which you can detach from. This lets whatever program or script you have running keep running even after you log out. To open a new screen, type:
