@@ -411,6 +411,7 @@ $ git clone [url]
 If you are working on multiple computers or with other people make sure you pull the changes before you start working or else you risk losing your changes or needing to merge, which can get ugly:
 $ git pull
 
+For a more well written guide, go here: http://rogerdudler.github.io/git-guide/
 
 
 Special Unix things:
@@ -453,3 +454,8 @@ $ screen -r [number]
 To find out more, use the manual page:
 
 $ man screen
+
+/dev/null:
+This is a directory in Linux that is akin to a wasteland. If you have output files you don't need you can send them here and it's like deleting them. This is especially useful with the SGE because it has default output and error files. If you don't need to look at these, you can add this to the top of your script and it won't write them to disk:
+#$ -e /dev/null
+#$ -o /dev/null
