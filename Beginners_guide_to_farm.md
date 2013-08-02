@@ -1,8 +1,8 @@
-##Beginner's guide to farm
+#Beginner's guide to farm
 
-###Contents:
+##Contents:
 
-#####All about farm:
+###All about farm:
 - What is farm
 - Setting up your account
 - Farm defaults
@@ -10,340 +10,391 @@
 - Special farm things [scratch usage, tentakel]
 - Submit jobs to farm 
     
-#####Unix computer tips:
+###Unix computer tips:
 - Bash 
 - R basics [input/output especially, herefiles, pull from distributions, creating your own distribution, things people in the lab need]
 - Python basics
 - Git 
 - Special Unix things [WriteFailed: Broken Pipe, convince people to learn awk, /dev/null]
     
-#####All about farm:
+###All about farm:
 
-What is farm:
+####What is farm:
 
 Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
 
-Setting up your account:
+####Setting up your account:
+
 In order to create an account on farm you need to send the CSE Help department your SSH public key. This key is a file created on your computer (not farm) that identifies your computer as your computer to farm. It's like a password that you don't need to type in. The process for generating your SSH public key is as follows:
 
-Mac:
+#####Mac:
+
 a. Open the terminal (Applications -> Utilities -> Terminal)
 b. Generate your key:
-ssh-keygen -t rsa
+
+		$ ssh-keygen -t rsa
 
 c. Accept the default location by pressing Enter.
 
 d. Type in a passphrase.
 
 e. Your system will now generate a key pair:
-Your identification has been saved in /Users/myname/.ssh/id_rsa.
-Your public key has been saved in /Users/myname/.ssh/id_rsa.pub.
-The key fingerprint is:
-ae:89:72:0b:85:da:5a:f4:7c:1f:c2:43:fd:c6:44:38 myname@mymac.local
-The key's randomart image is:
-+--[ RSA 2048]----+
-|                 |
-|         .       |
-|        E .      |
-|   .   . o       |
-|  o . . S .      |
-| + + o . +       |
-|. + o = o +      |
-| o...o * o       |
-|.  oo.o .        |
-+-----------------+
 
-WARNING: There are two keys generated: private and public. The public key is sent to the farm and the private key stays where it is. NEVER SHARE YOUR PRIVATE KEY. Any computer with your private key can log in to your account. Treat your private key like a password.
+		Your identification has been saved in /Users/myname/.ssh/id_rsa.
+		Your public key has been saved in /Users/myname/.ssh/id_rsa.pub.
+		The key fingerprint is:
+		ae:89:72:0b:85:da:5a:f4:7c:1f:c2:43:fd:c6:44:38 myname@mymac.local
+		The key's randomart image is:
+
+		+--[ RSA 2048]----+
+		|                 |
+		|         .       |
+		|        E .      |
+		|   .   . o       |
+		|  o . . S .      |
+		| + + o . +       |
+		|. + o = o +      |
+		| o...o * o       |
+		|.  oo.o .        |
+		+-----------------+
+
+**WARNING:** There are two keys generated: private and public. The public key is sent to the farm and the private key stays where it is. NEVER SHARE YOUR PRIVATE KEY. Any computer with your private key can log in to your account. Treat your private key like a password.
 
 f. Your keys are located in the .ssh folder in your home directory:
-/Users/[username]/.ssh
 
-g. Your public key is in a file called id_rsa.pub. Attach this file to the email you send to CSE Help.
+		/Users/[username]/.ssh
 
-Windows:
-a. Follow the steps here: http://siteadmin.gforge.inria.fr/ssh_windows.html
+g. Your public key is in a file called `id_rsa.pub`. Attach this file to the email you send to CSE Help.
+
+#####Windows:
+a. Follow the steps here:
+<http://siteadmin.gforge.inria.fr/ssh_windows.html>
 
 
-Farm Defaults:
+###Farm Defaults:
 Farm comes with a lot of software preinstalled. Here's a list of some of the most commonly used ones:
-gcc
-Git
-libsequence
-Matlab
-Perl
-Python
-R
 
-Installing programs on farm:
+* gcc
+* Git
+* libsequence
+* Matlab
+* Perl
+* Python
+* R
 
-C and C++:
-When using farm, you're probably going to need to install some software. Since farm is a Linux computer, it follows much the same procedure as other Linux computers. The main difference is that you can't install things into the default directory. This is because it's located in /bin and you need root access in order to do that. The solution is to change where the binary file is located:
+####Installing programs on farm:
 
-1) Download software:
-$ wget http://www.best-software-ever.com/thesis-in-a-box.tar.gz
+#####C and C++:
+When using farm, you're probably going to need to install some software. Since farm is a Linux computer, it follows much the same procedure as other Linux computers. The main difference is that you can't install things into the default directory. This is because it's located in `/bin` and you need root access in order to do that. The solution is to change where the binary file is located:
 
-2) Untar it:
-$ tar -xvzf thesis-in-a-box.tar.gz
+1. Download software:
 
-3) Move to your new directory:
-$ cd thesis-in-a-box
+		$ wget http://www.best-software-ever.com/thesis-in-a-box.tar.gz
 
-4) Configure the program:
-$ ./configure --prefix=/home/user/[path for binary executable]/
+2. Untar it:
 
-5) Compile the program:
-$ make
+		$ tar -xvzf thesis-in-a-box.tar.gz
 
-6) Move it to the path you specified:
-$ make install
+3. Move to your new directory:
+
+		$ cd thesis-in-a-box
+
+4. Configure the program:
+
+		$ ./configure --prefix=/home/user/[path for binary executable]/
+
+5. Compile the program:
+		
+		$ make
+
+6. Move it to the path you specified:
+	
+		$ make install
 
 Note: this only works for software that is packaged to be installed this way. Always make sure to read the README or INSTALL files to ensure you're doing it right.
 
 Then, to run the program just type in the path:
-$ /home/user/programs/thesis
+
+	$ /home/user/programs/thesis
 
 Now, that's a lot to type every time you want to run a program. There are multiple better ways.
 
-1) Alias:
-Bash has something called aliases, which let you put your own shorter (usually) command to stand for another command. For example, I could create an alias for my thesis program called "graduate" which runs "/home/user/programs/thesis". I could also create an alias for "ls -a" (show hidden files) called "la". To do this, you need to create a file called ".bash_profile"
+#####Alias:
 
-a) Make sure you're in the home directory
-$ cd
+Bash has something called aliases, which let you put your own shorter (usually) command to stand for another command. For example, I could create an alias for my thesis program called `graduate` which runs `/home/user/programs/thesis`. I could also create an alias for `ls -a` (show hidden files) called `la`. To do this, you need to create a file called `.bash_profile`
 
-b) Create .bash_profile
-$ touch .bash_profile
+a. Make sure you're in the home directory
 
-c) Open it up in your favorite text editor
-$ nano .bash_profile
+		$ cd
 
-d) Create the aliases by typing this in:
-alias graduate="/home/user/programs/thesis"
-alias la="ls -a"
+b. Create `.bash_profile`
 
-e) Save the file:
+		$ touch .bash_profile
+
+c. Open it up in your favorite text editor
+	
+		$ nano .bash_profile
+
+d. Create the aliases by typing this in:
+	
+		alias graduate="/home/user/programs/thesis"
+		alias la="ls -a"
+
+e. Save the file:
 In nano this is control+O (WriteOut)
 
-f) Reload bash by logging out or with this command:
-$ source ~/.bash_profile
+f. Reload bash by logging out or with this command:
 
-2) Add to path:
+		$ source ~/.bash_profile
+
+#####Add to path:
 When you type in a command into bash, bash looks for a binary file matching that command. The places it looks by default on farm are: 
-/share/apps/ge-6.2/bin/lx24-amd64
-/usr/kerberos/bin
-/usr/local/bin
-/bin
-/usr/bin
 
-We can shorten the command we have to type by adding the binary file to the path. To do this, we add it to the .bash_profile.
+	/share/apps/ge-6.2/bin/lx24-amd64
+	/usr/kerberos/bin
+	/usr/local/bin
+	/bin
+	/usr/bin
 
-a) Make sure you're in the home directory
-$ cd
+We can shorten the command we have to type by adding the binary file to the path. To do this, we add it to the `.bash_profile`.
 
-b) Create .bash_profile
-$ touch .bash_profile
+a. Make sure you're in the home directory
 
-c) Open it up in your favorite text editor
-$ nano .bash_profile
+		$ cd
 
-d) Add to your path by typing this in:
-PATH=$PATH:/home/user/programs/
-export PATH
+b. Create `.bash_profile`
 
-e) Save the file:
+		$ touch .bash_profile
+
+c. Open it up in your favorite text editor
+
+		$ nano .bash_profile
+
+d. Add to your path by typing this in:
+		
+		PATH=$PATH:/home/user/programs/
+		export PATH
+
+e. Save the file:
 In nano this is control+O (WriteOut)
 
-f) Reload bash by logging out or with this command:
-$ source ~/.bash_profile
+f. Reload bash by logging out or with this command:
 
-This will add all binary files in /home/user/programs/ including the one we want, "thesis". To see what is in your path, type this into bash:
-$ echo $PATH
+		$ source ~/.bash_profile
+
+This will add all binary files in `/home/user/programs/`including the one we want, `thesis`. To see what is in your path, type this into bash:
+
+	$ echo $PATH
 
 To add more folders to your path, just append it to the line with a colon in the beginning:
-PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
-export PATH
 
-Case study: msstats:
+	PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
+	export PATH
+
+#####Case study: `msstats`:
 Msstats is a program that uses libsequence. It's useful to see how this is installed because it requires libraries to be loaded during installation. 
 
-1) Download msstats source code:
-$ wget http://molpopgen.org/software/msstats/msstats-0.3.1.tar.gz
+1. Download msstats source code:
 
-2) Untar:
-$ tar -xvzf msstats-0.3.1.tar.gz
+		$ wget http://molpopgen.org/software/msstats/msstats-0.3.1.tar.gz
 
-3) cd to new directory:
-$ cd msstats-0.3.1
+2. Untar:
 
-4) Read the README:
-$ less README
+		$ tar -xvzf msstats-0.3.1.tar.gz
 
-5) Load the required modules:
-$ module load gcc
-$ module load libsequence
+3. cd to new directory:
 
-6) Provide configure with information about libsequence and run configure (notice the prefix option):
-$ CPPFLAGS=-I$LIBSEQUENCE/include LDFLAGS=-L$LIBSEQUENCE/lib ./configure --prefix=/home/[user]/programs/
+		$ cd msstats-0.3.1
 
-7) Make:
-$ make
+4. Read the README:
 
-8) Make install:
-$ make install 
+		$ less README
 
-Java programs:
-Using Java programs is easy because Java is inherently cross-platform. Java works by creating a layer between the computer and the program called the Java Virtual Machine (JVM). The JVM is platform specific, but any java executable file (.jar) can be run. This way, software people only have to send out 1 file which can be used on (almost) any platform. This also means that you don't have to compile the Java program (the software provider already did it for you), you just need to run it. A short example involving BEAGLE follows:
+5. Load the required modules:
 
-a) cd to the parent directory:
-$ cd programs
+		$ module load gcc
+		$ module load libsequence
 
-b) Download BEAGLE with wget:
-$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
+6. Provide configure with information about libsequence and run configure (notice the prefix option; that is all one line):
 
-c) Run BEAGLE according to the instructions provided here: http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf
-For example:
-$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
+		$ CPPFLAGS=-I$LIBSEQUENCE/include LDFLAGS=-L$LIBSEQUENCE/lib ./configure --prefix=/home/[user]/programs/
 
-As you can see, Java programs don't really need to be "installed", they just need to exist. If you do need to compile the program, you will need to follow the instructions provided. If the source code contains a file called "build.xml" it probably uses ant (which is similar to make). If this is the case, you can create a .jar file simply by typing:
+7. Make:
 
-$ ant compile jar
+		$ make
 
-Note: I haven't tested these myself. More information about ant is available here: http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
+8. Make install:
+		
+		$ make install 
+
+#####Java programs:
+Using Java programs is easy because Java is inherently cross-platform. Java works by creating a layer between the computer and the program called the Java Virtual Machine (JVM). The JVM is platform specific, but any java executable file (.jar) can be run. This way, software people only have to send out 1 file which can be used on (almost) any platform. This also means that you don't have to compile the Java program (the software provider already did it for you), you just need to run it. A short example involving `BEAGLE` follows:
+
+a. cd to the parent directory:
+
+		$ cd programs
+
+b. Download `BEAGLE` with `wget`:
+
+		$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
+
+c. Run BEAGLE according to the instructions provided here: <http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf> For example:
+
+		$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
+
+As you can see, Java programs don't really need to be "installed", they just need to exist. If you do need to compile the program, you will need to follow the instructions provided. If the source code contains a file called `build.xml` it probably uses ant (which is similar to make). If this is the case, you can create a .jar file simply by typing:
+
+	$ ant compile jar
+
+Note: I haven't tested these myself. More information about ant is available here: <http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html>
 
 
-Programs from Github:
+#####Programs from Github:
 Programs, pipelines, and scripts from Github work much the same way as software from other sources. One key difference is in acquiring it. There are two main ways to get software from Github: cloning and downloading a zip. The advantage of cloning is that if the software updates, you just need to pull the changes and reinstall and you are updated. With the zip file, you need to remove the folder and redownload it when there in an update. However, sometimes software isn't updated frequently so you don't need to worry about updates. 
 
-Cloning:
+#####Cloning:
 
-a) Go to the parent directory of where you want the software installed
-$ cd programs
+a. Go to the parent directory of where you want the software installed
 
-b) Visit the Github repository and on the very right there will be a text box that says "HTTPS clone URL" and it will contain a link that looks like this: https://github.com/[user]/[repository].git. Copy that link to the clipboard
+		$ cd programs
 
-c) Back in farm, clone the repository:
-$ git clone https://github.com/[user]/[repository].git
+b. Visit the Github repository and on the very right there will be a text box that says `HTTPS clone URL` and it will contain a link that looks like this: `https://github.com/[user]/[repository].git`. Copy that link to the clipboard
 
-d) Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
+c. Back in farm, clone the repository:
 
-Downloading a zip:
-a) Go to the parent directory of where you want the software installed
-$ cd programs
+		$ git clone https://github.com/[user]/[repository].git
 
-b) Visit the Github repository and on the very right there is a button that says "Download zip". Right click this link and click "copy link". 
+d. Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
 
-c) Back in farm, download the zip with wget:
-$ wget https://github.com/[user]/[repository]/archive/[branch].zip
+#####Downloading a zip:
+a. Go to the parent directory of where you want the software installed
 
-d) Unzip this folder with unzip:
-$ unzip [repository]
+		$ cd programs
 
-e) Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
+b. Visit the Github repository and on the very right there is a button that says `Download zip`. Right click this link and click `copy link`. 
+
+c. Back in farm, download the zip with wget:
+
+		$ wget https://github.com/[user]/[repository]/archive/[branch].zip
+
+d. Unzip this folder with unzip:
+
+		$ unzip [repository]
+
+e. Change to the directory you just created (the name of the repository) and follow the installation instructions that are (hopefully) provided.
 
 
-Special Farm Things:
+####Special Farm Things:
 Farm has a number of things that make it unique, not dissimilar from a snowflake. These are things you won't see on many Linux distributions and if you try to do it on them, you might get an angry message telling you to do something you're good at (don't listen to it you're beautiful). 
 
-Max number of command line arguments:
+#####Max number of command line arguments:
 
 The maximum number of arguments in any command is 131072. If you are getting errors from bash saying you have too many arguments, try and specify the maximum number of arguments as 131072. For example, in removing a bunch of files:
 
-$ find -name "[name_of_file].*" | xargs -n131072 rm
+	$ find -name "[name_of_file].*" | xargs -n131072 rm
 
-This command will remove all files that match the pattern "[name_of_file].*". * is a wildcard character. The -name is different from [name_of_file] and should not be substituted!
+This command will remove all files that match the pattern `[name_of_file].*`. `*` is a wildcard character. The `-name` is different from `[name_of_file]` and should not be substituted!
  
-Modules:
+#####Modules:
 
 This package allows system administrators to update the system libraries and other core programs without breaking your code or scripts. Modules contain the information that the shell needs to locate programs and libraries without getting confused about different versions and different files. For you, this means that before using something like gcc, you need to load it:
-$ module load gcc
-Module GCC 4.5.0 Loaded.
+
+	$ module load gcc
+	Module GCC 4.5.0 Loaded.
 
 To see what modules are available, type:
-$ module avail
+
+	$ module avail
 
 Any one of these modules can be loaded and should be. The special farm thing here is that if you run python, for example, without loading the module, you'll run version 2.4.3. However, if you load the python module, you will get 2.7.3. This becomes an issue when you run python from a script but forget to load the module because you'll be running an old version of python. So remember, if you're using a preinstalled program, make sure you load the module. 
 
-Built-in variables:
+#####Built-in variables:
 
-When you submit a job on farm, the Sun Grid Engine gives you two variables that change according to some parameters. One is the variable "$SGE_TASK_ID". When running an array of jobs, this variable corresponds to a particular task. Each job in the array has a different value for $SGE_TASK_ID. 
+When you submit a job on farm, the Sun Grid Engine gives you two variables that change according to some parameters. One is the variable `$SGE_TASK_ID`. When running an array of jobs, this variable corresponds to a particular task. Each job in the array has a different value for `$SGE_TASK_ID`. 
 
-Next, there is "$JOB_ID". This variable changes every time you submit a job. Therefore, when you submit an array of jobs, each job will have the same $JOB_ID, but each one will have a different $SGE_TASK_ID. These variables can be used in conjunction to name output files. For example, you can submit a job like this:
+Next, there is `$JOB_ID`. This variable changes every time you submit a job. Therefore, when you submit an array of jobs, each job will have the same `$JOB_ID`, but each one will have a different `$SGE_TASK_ID`. These variables can be used in conjunction to name output files. For example, you can submit a job like this:
 
-sfs_code 1 1 > out.$JOB_ID.$SGE_TASK_ID
+	sfs_code 1 1 > out.$JOB_ID.$SGE_TASK_ID
 
-This will save the output in a file named something like this: out.83917.1
+This will save the output in a file named something like this: `out.83917.1`
 
-Submitting Jobs to farm [copy and paste more stuff from current wiki]:
+####Submitting Jobs to farm:
 Speaking of submitting jobs, you are probably going to want to do that. The farm cluster uses the Sun Grid Engine (SGE) to distribute jobs across its 39(?) nodes. When you run simulations, you want them to run on these nodes rather than the one you're logged in to (which is called the head). To submit a job simply type:
-$ qsub myjob.sh
+
+	$ qsub myjob.sh
 
 The qsub command has a number of options, many of which are necessary: [expand on this from the current wiki] 
 
--S:
+`-S`:
 This option tells qsub what shell you're using. You will probably want to use bash:
--S /bin/bash
+`-S /bin/bash`
 
--cwd:
+`-cwd`:
 This tells qsub to run the command from your current working directory. 
 
--e:
-This tells qsub where to put the error log files. If you don't want to save them, put them in /dev/null:
--e /dev/null
+`-e`:
+This tells qsub where to put the error log files. If you don't want to save them, put them in `/dev/null`:
+`-e /dev/null`
 
--o:
-This tells qsub where to put the output log files. If you don't want to save them, or if you are creating your own output files, put them in /dev/null:
--o /dev/null
+`-o`:
+This tells qsub where to put the output log files. If you don't want to save them, or if you are creating your own output files, put them in `/dev/null`:
+`-o /dev/null`
 
--t:
+`-t`:
 This tells qsub that you are submitting an array of jobs. It will run the script you send it multiple times. To specify how many times, use a range. The max number of jobs in an array is 50,000:
--t 1-10
+`-t 1-10`
 
--help:
+`-help`:
 
 Prints a listing of all options.
 
--j y|n:
+`-j y|n`:
 
-Specifies whether or not the standard error stream of the job is merged into the standard output stream. If both the -j y and the -e options are present, Grid Engine sets, but ignores the error-path attribute.
+Specifies whether or not the standard error stream of the job is merged into the standard output stream. If both the `-j y` and the `-e` options are present, Grid Engine sets, but ignores the `error-pat`h attribute.
 
--m b|e|a|s|n,…:
+`-m b|e|a|s|n,…`:
 
-Defines or redefines under which circumstances mail is to be sent to the job owner or to the users defined with the -M option described below. The option arguments have the following meaning: 'b' Mail is sent at the beginning of the job. 'e' Mail is sent at the end of the job. 'a' Mail is sent when the job is aborted or rescheduled. 's' Mail is sent when the job is suspended. 'n' No mail is sent. Currently no mail is sent when a job is suspended.
+Defines or redefines under which circumstances mail is to be sent to the job owner or to the users defined with the `-M` option described below. The option arguments have the following meaning: 'b' Mail is sent at the beginning of the job. 'e' Mail is sent at the end of the job. 'a' Mail is sent when the job is aborted or rescheduled. 's' Mail is sent when the job is suspended. 'n' No mail is sent. Currently no mail is sent when a job is suspended.
 
--M user[@host],…
+`-M user[@host],…`
 
-Defines or redefines the list of users to which the server that executes the job has to send mail, if the server sends mail about the job. Default is the job owner at the originating host. You can use this to add your email address for updates or information about your jobs. For example, “qsub -M johndoe@example.com stupid.sh” will send email about the job status of the stupid.sh script to johndoe@example.com.
+Defines or redefines the list of users to which the server that executes the job has to send mail, if the server sends mail about the job. Default is the job owner at the originating host. You can use this to add your email address for updates or information about your jobs. For example, `qsub -M johndoe@example.com stupid.sh` will send email about the job status of the stupid.sh script to johndoe@example.com.
 
--N name
+`-N name`
 
-The name of the job. The name can be any printable set of characters, starting with an alphabetic character. If the -N option is not present Grid Engine assigns the name of the job script to the job after any directory pathname has been removed from the script-name.
+The name of the job. The name can be any printable set of characters, starting with an alphabetic character. If the `-N` option is not present Grid Engine assigns the name of the job script to the job after any directory pathname has been removed from the script-name.
 
-Output to many files vs one:
-When using qsub, you are going to want to save the output of each simulation in a different file. This is because when multiple processors write to the same file, bad and funky things happen. James Brown may be pleased, but you will not be. To achieve this, use the built-in variables ($SGE_TASK_ID, $JOB_ID) to number your output files.
+#####Output to many files vs one:
+When using qsub, you are going to want to save the output of each simulation in a different file. This is because when multiple processors write to the same file, bad and funky things happen. James Brown may be pleased, but you will not be. To achieve this, use the built-in variables (`$SGE_TASK_ID`, `$JOB_ID`) to number your output files.
 
-Checking up on jobs:
+#####Checking up on jobs:
 SGE comes with a command called qstat which will tell you the progress of your job:
-$ qstat
+
+	$ qstat
 
 You can also check the status of a particular job:
-$ qstat -j [job-id]
+
+	$ qstat -j [job-id]
 
 You can delete a job:
-$ qdel [job-id]
+
+	$ qdel [job-id]
 
 Log into a compute node:
-$ qrsh
 
-Things to watch for:
+	$ qrsh
 
-NFS Usage
+#####Things to watch for:
+
+######NFS Usage
 
 The network filesystem (NFS) is what the system uses to communicate between the head node and compute nodes. Overloading the NFS can cause work to slow down dramatically or even cause nodes to crash. Remember that all your files are stored on the head node, so any jobs that do heavy reading/writing require that the CPU on the compute node is writing over the network (using NFS) to the headnode. Avoid heavy read/write as much as possible, for example, by writing to files on the compute node and moving them to the head node when you're done. NFS usage may spike to >150Mb when transferring big files or starting a run, but if it stays constant at >10Mb your job probably needs to be re-thought, as this will likely cause problems for other users.
 
-Memory
+######Memory
 
 Each compute node has 24G RAM. If you are using more than 1.5G RAM per job you need to use something like ”-pe threaded” to request more CPU so you do not end up using other people's resources. Check the overall memory usage of your runs; using too much memory can cause individual nodes to go down.
 
-Space on nodes
+######Space on nodes
 
 Each compute node has a 16G hard drive. This is available in /state/partition1/ . It is advisable to create your own directory there, e.g. /state/partition1/jri . You can use tentakel to do this on all nodes at once. It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the $JOB_ID variable. This prevents overwriting files. Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
 
@@ -355,21 +406,19 @@ To check on a big job:
 
 * Run top. Watch for any of the following:
 
-Does the load average spike?
+	- Does the load average spike?
 
-Does the %wa (3rd line) spike?
+	- Does the %wa (3rd line) spike?
 
-Does any process balloon in memory usage? (sort by memory use with M)
+	- Does any process balloon in memory usage? (sort by memory use with M)
 
-Does any process saturate at 100% cpu usage? Which?
+	- Does any process saturate at 100% cpu usage? Which?
 
-Does swap usage increase?
-
-
+	- Does swap usage increase?
 
 
 
-
+======
 
 Unix computer tips:
 This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
