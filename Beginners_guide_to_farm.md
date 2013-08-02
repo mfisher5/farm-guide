@@ -191,7 +191,7 @@ To add more folders to your path, just append it to the line with a colon in the
 	PATH=$PATH:/home/user/programs/:/home/user/who-needs-organization/bin/
 	export PATH
 
-#####Case study: `msstats`:
+#####Case study: msstats:
 Msstats is a program that uses libsequence. It's useful to see how this is installed because it requires libraries to be loaded during installation. 
 
 1. Download msstats source code:
@@ -238,7 +238,7 @@ b. Download `BEAGLE` with `wget`:
 
 		$ wget http://faculty.washington.edu/browning/beagle/beagle.jar
 
-c. Run BEAGLE according to the instructions provided here: <http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf> For example:
+c. Run `BEAGLE` according to the instructions provided here: <http://faculty.washington.edu/browning/beagle/beagle_3.3.2_31Oct11.pdf> For example:
 
 		$ java -Xmx800m -jar beagle.jar data=data.bgl trait=T2D out=example
 
@@ -260,7 +260,7 @@ a. Go to the parent directory of where you want the software installed
 
 b. Visit the Github repository and on the very right there will be a text box that says `HTTPS clone URL` and it will contain a link that looks like this: `https://github.com/[user]/[repository].git`. Copy that link to the clipboard
 
-c. Back in farm, clone the repository:
+c. Back in farm, `clone` the repository:
 
 		$ git clone https://github.com/[user]/[repository].git
 
@@ -368,7 +368,7 @@ The name of the job. The name can be any printable set of characters, starting w
 When using qsub, you are going to want to save the output of each simulation in a different file. This is because when multiple processors write to the same file, bad and funky things happen. James Brown may be pleased, but you will not be. To achieve this, use the built-in variables (`$SGE_TASK_ID`, `$JOB_ID`) to number your output files.
 
 #####Checking up on jobs:
-SGE comes with a command called qstat which will tell you the progress of your job:
+SGE comes with a command called `qstat` which will tell you the progress of your job:
 
 	$ qstat
 
@@ -392,11 +392,11 @@ The network filesystem (NFS) is what the system uses to communicate between the 
 
 ######Memory
 
-Each compute node has 24G RAM. If you are using more than 1.5G RAM per job you need to use something like ”-pe threaded” to request more CPU so you do not end up using other people's resources. Check the overall memory usage of your runs; using too much memory can cause individual nodes to go down.
+Each compute node has 24G RAM. If you are using more than 1.5G RAM per job you need to use something like `-pe threaded` to request more CPU so you do not end up using other people's resources. Check the overall memory usage of your runs; using too much memory can cause individual nodes to go down.
 
 ######Space on nodes
 
-Each compute node has a 16G hard drive. This is available in /state/partition1/ . It is advisable to create your own directory there, e.g. /state/partition1/jri . You can use tentakel to do this on all nodes at once. It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the $JOB_ID variable. This prevents overwriting files. Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
+Each compute node has a 16G hard drive. This is available in /state/partition1/ . It is advisable to create your own directory there, e.g. /state/partition1/jri . You can use tentakel to do this on all nodes at once. It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the `$JOB_ID` variable. This prevents overwriting files. Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
 
 To avoid causing problems with the NFS, in general:
 
@@ -420,96 +420,106 @@ To check on a big job:
 
 ======
 
-Unix computer tips:
+###Unix computer tips:
 This section contains tips and information applicable to any Unix-based computer you use. (Hereafter referred to as Unix).
 
-Bash:
-In order to effectively use the farm computer, you need to know how to move around in bash. Use this course to learn how: http://cli.learncodethehardway.org/book/
+####Bash:
+In order to effectively use the farm computer, you need to know how to move around in bash. Use this course to learn how: <http://cli.learncodethehardway.org/book/>
 
 [add specific things that people in the lab need/use]
 
-R:
+####R:
 
-Python: 
-Learn from here: http://learnpythonthehardway.org/book/
+####Python: 
+Learn from here: <http://learnpythonthehardway.org/book/>
 
 [add specific things that people in the lab need/use]
 
-Git:
-Git is useful because it allows you to share your programs/scripts with minimal effort and it backs up your programs in case you do something dumb and "rm -rf ./" your source code (please don't run that code). 
+####Git:
+Git is useful because it allows you to share your programs/scripts with minimal effort and it backs up your programs in case you do something dumb and `rm -rf ./` your source code (please don't run that code because it deletes things you don't want deleted). 
 
 Git is already installed on farm. To create a new repository, make a new folder:
-$ mkdir i-am-awesome
+
+	$ mkdir i-am-awesome
 
 cd to that directory and type in:
-$ git init
+
+	$ git init
 
 Now you have a new git repository. Now you need to connect it to your Github account:
-$ git remote add origin https://github.com/[username]/[repository-name].git
+
+	$ git remote add origin https://github.com/[username]/[repository-name].git
 
 Now you can add files to the repository with the git add command:
-$ git add [file1] [file2]
+
+	$ git add [file1] [file2]
 
 You can add multiple files at once separated with a space or if you're lazy you can wildcard:
-$ git add *
+
+	$ git add *
 
 Now to send your files to Github, you need to commit them:
-$ git commit -m "[info]"
+
+	$ git commit -m "[info]"
 
 And finally, push them to the server:
-$ git push
+
+	$ git push
 
 If a repository exists, you can add it to your computer by cloning it (this is explained in depth in the software installation section):
-$ git clone [url]
+
+	$ git clone [url]
 
 If you are working on multiple computers or with other people make sure you pull the changes before you start working or else you risk losing your changes or needing to merge, which can get ugly:
-$ git pull
 
-For a more well written guide, go here: http://rogerdudler.github.io/git-guide/
+	$ git pull
+
+For a more well written guide, go here: <http://rogerdudler.github.io/git-guide/>
 
 
-Special Unix things:
+####Special Unix things:
 
-What language should I use?
+#####What language should I use?
 The world of computer languages is confusing because of the seemingly arbitrary distinctions and made up words that make every language seem like the new hot stuff. I'm going to try and clear up some of the confusion.
 
 Two of the major camps of languages are scripting languages and compiled languages (scripting languages are also called interpreted languages). Scripting languages have something called an interpreter which runs while your script is running and translates your instructions on the fly to the computer. Examples of scripting languages include perl, Python, R, Ruby, and Javascript. Compiled languages on the other hand, have something called a compiler which translates your program into machine code (or binary: 00101010010). The compiler is no longer needed at this point and your computer can just run your compiled code (the binary file). Examples of compiled languages are: C, C++, Java, Fortran, COBOL.
 
 There are a few notable results of the difference between compiled and scripting languages:
 
-1) Scripts are usually slower than their compiled counterparts: this is because the interpreter must run while the script is running so it takes up more memory (and probably other reasons).
+1. Scripts are usually slower than their compiled counterparts: this is because the interpreter must run while the script is running so it takes up more memory (and probably other reasons).
 
-2) Scripts are easier to write than compiled programs: when you compile a program, you need to tell the computer __everything__, including where to start. This is why C, C++, and Java programs have a "main" method or class. Generally speaking, you need to be more careful and know a lot about the language you're programming in when writing in a compiled language. Scripts on the other hand can figure most things out on their own and run top to bottom (unless told otherwise). 
+2. Scripts are easier to write than compiled programs: when you compile a program, you need to tell the computer __everything__, including where to start. This is why C, C++, and Java programs have a "main" method or class. Generally speaking, you need to be more careful and know a lot about the language you're programming in when writing in a compiled language. Scripts on the other hand can figure most things out on their own and run top to bottom (unless told otherwise). 
 
-3) Scripts are cross platform: or more accurately, they are more cross platform than compiled programs. This is because when programs are compiled, they are compiled according to the processor instructions, which change from computer to computer. This is why you can't install iOS on your desktop computer (also because Apple would sue you so hard). 
+3. Scripts are cross platform: or more accurately, they are more cross platform than compiled programs. This is because when programs are compiled, they are compiled according to the processor instructions, which change from computer to computer. This is why you can't install iOS on your desktop computer (also because Apple would sue you so hard). 
 
-So what do I pick?
+#####So what do I pick?
 Scripts for short things like manipulating files and summarizing data, programs for larger projects that do complex transformations or simulations (if you're really in doubt, pick scripts.)
 
-Object orientation?
-I refer you to this: http://learnpythonthehardway.org/book/ex42.html
+#####Object orientation?
+I refer you to this: <http://learnpythonthehardway.org/book/ex42.html>
 Any other questions can be answered with Google and mediation.
 
 
 
-Screen:
+#####Screen:
 Screen is especially useful for farm because it lets you run things that take a while without qsubbing (Be careful not to run things that take hours and lots of memory though). Screen lets you open another session on the farm which you can detach from. This lets whatever program or script you have running keep running even after you log out. To open a new screen, type:
 
-$ screen
+	$ screen
 
 Now you'll have a new bash session. To detach from that screen, press they keys Control-a, d. To see what screens you have detached, use the -ls option:
 
-$ screen -ls
+	$ screen -ls
 
 This will output a list of existing screens along with a number corresponding to each screen. In order to switch to a particular screen, use the -r option along with that screen's number:
 
-$ screen -r [number]
+	$ screen -r [number]
 
 To find out more, use the manual page:
 
-$ man screen
+	$ man screen
 
-/dev/null:
+#####/dev/null:
 This is a directory in Linux that is akin to a wasteland. If you have output files you don't need you can send them here and it's like deleting them. This is especially useful with the SGE because it has default output and error files. If you don't need to look at these, you can add this to the top of your script and it won't write them to disk:
-#$ -e /dev/null
-#$ -o /dev/null
+
+	#$ -e /dev/null
+	#$ -o /dev/null
