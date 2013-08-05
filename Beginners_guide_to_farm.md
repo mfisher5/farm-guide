@@ -324,8 +324,13 @@ Checking up on jobs:
 SGE comes with a command called qstat which will tell you the progress of your job:
 $ qstat
 
+You can use the following to check on status of everyone's jobs
+$ qstat -u \*
+
 You can also check the status of a particular job:
 $ qstat -j [job-id]
+
+The maxvmem information gives you an idea of the maximum amount of RAM your job has used. This is important for memory considerations (see below).
 
 You can delete a job:
 $ qdel [job-id]
