@@ -372,9 +372,14 @@ SGE comes with a command called `qstat` which will tell you the progress of your
 
 	$ qstat
 
+You can use the following to check on status of everyone's jobs
+$ qstat -u \*
+
 You can also check the status of a particular job:
 
 	$ qstat -j [job-id]
+
+The maxvmem information gives you an idea of the maximum amount of RAM your job has used. This is important for memory considerations (see below).
 
 You can delete a job:
 
@@ -520,6 +525,11 @@ To find out more, use the manual page:
 
 #####/dev/null:
 This is a directory in Linux that is akin to a wasteland. If you have output files you don't need you can send them here and it's like deleting them. This is especially useful with the SGE because it has default output and error files. If you don't need to look at these, you can add this to the top of your script and it won't write them to disk:
+<<<<<<< HEAD
 
 	#$ -e /dev/null
 	#$ -o /dev/null
+=======
+#$ -e /dev/null
+#$ -o /dev/null
+>>>>>>> origin/master
