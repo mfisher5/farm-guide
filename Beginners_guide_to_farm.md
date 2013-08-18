@@ -389,6 +389,20 @@ Log into a compute node:
 
 	$ qrsh
 
+#####Ganglia
+
+One of the best ways to check on jobs is to use the ganglia website. It can be opened on a browser at
+
+	$ http://localhost:50070/ganglia/
+
+But only works if you've logged into farm with a special ssh command. It is suggested to write an alias to log into farm always using:
+
+	$ ssh -Y -L 50070:farm:80 user@farm.caes.ucdavis.edu
+
+Where "user" is replaced with your username.
+
+Ganglia lets you check down nodes (email help to get them restarted), network I/O, memory, etc. for individual nodes as well as the head node.
+
 #####Things to watch for:
 
 ######NFS Usage
