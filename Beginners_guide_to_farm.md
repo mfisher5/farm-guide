@@ -415,7 +415,12 @@ Each compute node has 24G RAM. If you are using more than 1.5G RAM per job you n
 
 ######Space on nodes
 
-Each compute node has a 16G hard drive. This is available in /state/partition1/ . It is advisable to create your own directory there, e.g. /state/partition1/jri . You can use tentakel to do this on all nodes at once. It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the `$JOB_ID` variable. This prevents overwriting files. Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
+Each compute node has a 200G hard drive. This is available in /scratch . 
+It is advisable to create your own directory there, e.g. /scratch/jri . 
+You can use tentakel to do this on all nodes at once. 
+It is a good idea for jobs writing to the compute node that you create a new directory for each job, using the `$JOB_ID` variable. 
+This prevents overwriting files. 
+Make sure to delete all these files when the job is done, so the hard disk on the compute node does not fill up.
 
 To avoid causing problems with the NFS, in general:
 
