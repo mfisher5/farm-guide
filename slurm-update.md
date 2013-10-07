@@ -212,6 +212,17 @@ You can monitor jobs a few ways:
    what this section means, save the kittens and don't `ssh` to the
    nodes.
 
+## Using R with Slurm
+
+Often, we need to work with R interactively on a server. To do this,
+we use `srun` with the following options:
+
+    $ srun -p your-partition --pty R
+
+This will drop you into an interactive R session on the partition
+specified by `-p`. `--pty` launches srun in terminal in pseudoterminal
+mode, which makes R behave as it would on your local machine.
+
 ## Warnings
 
 **Do not run anything on the headnode** except cluster management
@@ -230,5 +241,4 @@ git is a good option.
 
 ## To Add
 
- - `salloc`
  - Array jobs
