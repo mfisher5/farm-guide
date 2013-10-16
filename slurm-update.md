@@ -31,7 +31,7 @@ farm with just `ssh farm` in the future.
 ## Getting to Know Slurm
 
 Slurm is a lot like SGE: you submit jobs via batch scripts. These
-batch scripts have common headers; we will see one below.
+batch scripts have common headers; we will see one below. For more information on Slurm, check the [CSEwiki](http://wiki.cse.ucdavis.edu/support:hpc:software:slurm) too.
 
 First, we can get a sense of our lovely cluster with `sinfo`, which is
 pronounced *sin-fay* (entomology unknown, but we think French origin):
