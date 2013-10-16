@@ -1,0 +1,35 @@
+1) I recommend ~/src for compiling source, ~/pkg for installing
+  packages, and ~/bin for things you run from the command line.
+  So things like:
+	cd src; wget http://foo.com/foo.tar.gz
+       ./configure --prefix=~/pkg; make make install
+       mkdir ~/bin
+       ln -sf ~/pkg/foo-1.2.3/bin/foo ~/bin/foo
+  Then /runs, /projects, /jobs or similar for job related I/O.
+2) Private keys like passwords is good.  But I also suggest they only
+  exist where you physically sit.
+3) If adding a binary to your path I'd add it first, not last.
+  Otherwise you'll likely get the wrong one, so:
+    export PATH=~/bin:$PATH not the reverse.
+4) Wow, dangerous:
+	find -name "[name_of_file].*" | xargs -n131072 rm
+  A) that will match directories, god forbid you name the dir
+     for the files in it
+  B) it won't do at all what you think if there is a space in the
+     filename
+  C) not sure where 131072 came from, but it's a bad idea, I'd
+     suggest the defaults.
+  D) you need to name a directory... adding to the danger.
+
+  All in all looks like an excellent way to blow away a directory.
+
+  I'd suggest:
+    find . -type f -0 | xargs -0 echo
+
+  That will:
+    * work with filenames with spaces in it
+    * leave xargs to decide whatever your shell is likely to accept
+    * not consider directories
+    * echo a harmless list of filenames.
+    * user could be advised replace echo with rm if they are sure.
+
