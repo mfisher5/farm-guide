@@ -1,19 +1,21 @@
-# Slurm Update to the RILAB Farm Guide
+# Slurm Update for general farm users 
+
+(Modified from RILAB Farm Guide)
 
 ![enjoy-slurm](http://i.imgur.com/9MG5aig.png)
 
 Farm2 is runs on a different cluster workload management system than
 Farm1 called Slurm. Most of
-[our existing documenation](https://github.com/RILAB/farm-guide/blob/master/Beginners_guide_to_farm.md)
+[our existing documenation](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md)
 is still relevant, up until
-[how we submit jobs](https://github.com/RILAB/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
+[how we submit jobs](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
 
 ## Connecting to Farm2
 
 The address is `username@agri.cse.ucdavis.edu`. `username` here will
 be your UCD kerberos ID. You will have to have generated a SSH key
 (see
-[this section in the past documentation](https://github.com/RILAB/farm-guide/blob/master/Beginners_guide_to_farm.md#setting-up-your-account))
+[this section in the past documentation](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#setting-up-your-account))
 and given the **public** key part (do not share the private key!) to
 CSE Help.
 
@@ -135,7 +137,7 @@ the `steve.sh` job (assuming it's in a `scripts/` directory):
 It's that easy! After submitting jobs, check with `squeue` that it's
 still running (and didn't immediately fail, do to syntax error or a
 program not being in your `$PATH` or a
-[module not loaded](https://github.com/RILAB/farm-guide/blob/master/Beginners_guide_to_farm.md#modules)). If
+[module not loaded](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#modules)). If
 you don't see a `steve` job in `squeue`, then it's time to debug. Use
 these `slurm-log/` directory to standard output and standard error to
 figure out what happened. I use `ls -lrt` (`ls` with reverse time
@@ -153,34 +155,9 @@ at this in less or something.
 
 ## Specifying a Partition like bigmem
 
-You may want to use the big memory machines that the Ross-Ibarra lab
-has access to, which is an option because our fearless leader
-contributed a machine to the bigmem pool.
+This is not an option unless the fearless leader of one's lab 
+contributed a machine to the bigmem pool. See [the RILAB Wiki for details if that's the case](https://github.com/RILAB/farm-guide/blob/master/slurm-update.md#specifying-a-partition-like-bigmem).
 
-Let's first see these machines using `sinfo`:
-
-    $ sinfo
-	PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-	low          up   infinite     17    mix c9-[35-41,44-52,55]
-	low          up   infinite      6   idle c8-[22-25],c9-[53-54]
-	med*         up   infinite     17    mix c9-[35-41,44-52,55]
-	med*         up   infinite      6   idle c8-[22-25],c9-[53-54]
-	hi           up   infinite     17    mix c9-[35-41,44-52,55]
-	hi           up   infinite      6   idle c8-[22-25],c9-[53-54]
-	bigmem       up   infinite      1    mix bigmem3
-	bigmem       up   infinite      1   idle bigmem4
-
-Voilà! We see that we have two bigmems (3 and 4), noting these are in
-a special partition called `bigmem`. To use these, we specify the
-partition in either `sbatch` or our batch script itself.
-
-To do so with `sbatch`, do:
-
-    $ sbatch -p bigmem steve.sh
-
-Or, we can do so in the batch script itself by adding a line:
-
-    #SBATCH --partition=bigmem
 
 ## Allocating Resources
 
@@ -212,16 +189,46 @@ You can monitor jobs a few ways:
    what this section means, save the kittens and don't `ssh` to the
    nodes.
 
+
+## Interactive jobs (R, xterm) using Slurm
+
+Often, we need to work interactively on a server. 
+Keep in mind that using an interactive job on the server is fragile. 
+Any interactive jobs may be randomly killed by the smallest network or system problem anywhere on your desktop/laptop, the network connection to the head
+node, the network connection to the compute node, etc.
+
+So avoid any long running jobs, they might be killed by a very short network issue!
+
 ## Using R with Slurm
 
-Often, we need to work with R interactively on a server. To do this,
-we use `srun` with the following options:
+For an interactive job, use `srun` with the following options:
+
 
     $ srun -p your-partition --pty R
 
 This will drop you into an interactive R session on the partition
 specified by `-p`. `--pty` launches srun in terminal in pseudoterminal
 mode, which makes R behave as it would on your local machine.
+
+
+## Using X fowarding with Slrum
+
+For an interactive job using X windows, make sure to use the appropriate options to ssh in, 
+
+    $ ssh -X <user>@<cluster
+
+Then, use `srunx`:
+      
+      $ srunx <queuename>
+
+The command `srunx` is an alias: 
+
+    $ salloc -p [queue] xterm -e 'ssh -X `srun hostname`'  
+
+So, to pass additional options (e.g. a specific amount of memory) try modifying this command directly. For example: 
+   
+   $ salloc -p [queue] xterm -e 'ssh -X `srun hostname`'   --mem=<MB>
+
 
 ## Warnings
 
