@@ -6,16 +6,16 @@
 
 Farm2 is runs on a different cluster workload management system than
 Farm1 called Slurm. Most of
-[our existing documenation](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md)
+[our existing documenation](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md)
 is still relevant, up until
-[how we submit jobs](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
+[how we submit jobs](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
 
 ## Connecting to Farm2
 
 The address is `username@agri.cse.ucdavis.edu`. `username` here will
 be your UCD kerberos ID. You will have to have generated a SSH key
 (see
-[this section in the past documentation](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#setting-up-your-account))
+[this section in the past documentation](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#setting-up-your-account))
 and given the **public** key part (do not share the private key!) to
 CSE Help.
 
@@ -137,7 +137,7 @@ the `steve.sh` job (assuming it's in a `scripts/` directory):
 It's that easy! After submitting jobs, check with `squeue` that it's
 still running (and didn't immediately fail, do to syntax error or a
 program not being in your `$PATH` or a
-[module not loaded](https://github.com/ashander/farm-guide/blob/master/Beginners_guide_to_farm.md#modules)). If
+[module not loaded](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#modules)). If
 you don't see a `steve` job in `squeue`, then it's time to debug. Use
 these `slurm-log/` directory to standard output and standard error to
 figure out what happened. I use `ls -lrt` (`ls` with reverse time
