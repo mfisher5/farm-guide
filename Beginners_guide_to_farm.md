@@ -143,33 +143,33 @@ In either case, first specify the location in your home directory on farm where 
 Here, well briefly go over the basics of connecting to farm, moving files between your PC and farm, and submitting jobs. A wonderful resource to look/work through to get familiar with the syntax is: <http://cli.learncodethehardway.org/book/>.
 
 #####First time in farm
-a. Connect to farm using the ssh command: "ssh username@farm.cse.ucdavis.edu". Hereafter, don't include the quotes when typing in commands; also, CSE will email you the address you should use once your account is activated. Key in your passphrase when prompted. The passphrase is hidden, so no text will show up when you do this and it'll seem like your keyboard is broken; it's fine.
+a. Connect to farm using the ssh command: `ssh username@farm.cse.ucdavis.edu`. Hereafter, don't include the quotes when typing in commands; also, CSE will email you the address you should use once your account is activated. Key in your passphrase when prompted. The passphrase is hidden, so no text will show up when you do this and it'll seem like your keyboard is broken; it's fine.
 
-b. You should see a series of messages, and after that you'll be in your home directory on farm: /home/username/. You can verify this via print working directory - "pwd"
+b. You should see a series of messages, and after that you'll be in your home directory on farm: /home/username/. You can verify this via print working directory - `pwd`
 
-c. Now lets make 2 folders we referenced earlier in the .sh and .R scripts. You can structure this any way you like; I ran one command for the scripts+outputs folder on my current project ("mkdir myproject") and one command to make a folder for all my R packages ("mkdir MyPackages").
+c. Now lets make 2 folders we referenced earlier in the .sh and .R scripts. You can structure this any way you like; I ran one command for the scripts+outputs folder on my current project (`mkdir myproject`) and one command to make a folder for all my R packages (`mkdir MyPackages`).
 
-d. Enter the command "ls". You should still be in your home directory, and this will show all the files/folders in there. You should see two items: "myproject" and "MyPackages".
+d. Enter the command `ls`. You should still be in your home directory, and this will show all the files/folders in there. You should see two items: `myproject` and `MyPackages`.
 
 #####Moving files between farm and your computer
-a. To do this, you'll need to log out of farm - use the "exit" command. If you were in the home directory on your PC before logging on (/c/Users/Username/ in Windows), you should still be there - use "pwd" to check.
+a. To do this, you'll need to log out of farm - use the `exit` command. If you were in the home directory on your PC before logging on (/c/Users/Username/ in Windows), you should still be there - use `pwd` to check.
 
-b. If you're new to Linux, it may be helpful to make a new folder near your home directory where we could store all our .sh and .R scripts. I created a new folder in the .ssh folder for this using "mkdir .ssh/ClusterScripts". I will reference this path in future commands, but this could be any folder on your computer.
+b. If you're new to Linux, it may be helpful to make a new folder near your home directory where we could store all our .sh and .R scripts. I created a new folder in the .ssh folder for this using `mkdir .ssh/ClusterScripts`. I will reference this path in future commands, but this could be any folder on your computer.
 
-c. (maybe optional) A common issue on Windows machines is that they tend to save script files in DOS format, whereas farm needs them to be in unix format. To be safe, you can easily fix this via the Git Bash terminal. Simply (1) navigate to the folder with scripts "cd .ssh/ClusterScripts", and (2) run the commands "dos2unix *.sh" and "dos2unix *.R" (* is a 'wildcard' character - that is, any files ending with .R or .sh, like our scripts, will be converted). You  should see something like "dos2unix: converting file myscript.sh to UNIX format ..."
+c. (maybe optional) A common issue on Windows machines is that they tend to save script files in DOS format, whereas farm needs them to be in unix format. To be safe, you can easily fix this via the Git Bash terminal. Simply (1) navigate to the folder with scripts `cd .ssh/ClusterScripts`, and (2) run the commands `dos2unix *.sh` and `dos2unix *.R` (* is a 'wildcard' character - that is, any files ending with .R or .sh, like our scripts, will be converted). You  should see something like `dos2unix: converting file myscript.sh to UNIX format ...`
 
-d. Now move the scripts to your account on farm using: "scp .ssh/ClusterScripts/myscript.R username@farm.cse.ucdavis.edu:~/myproject/myscript.R" and "scp .ssh/ClusterScripts/myscript.sh username@farm.cse.ucdavis.edu:~/myproject/myscript.sh". Each time, you'll be asked for your passphrase to farm. Alternatively, if you only have the 2 scripts in your folder, you could use "scp .ssh/ClusterScripts/* username@farm.cse.ucdavis.edu:~/myproject/", which will copy over all files inside ClusterScripts.
+d. Now move the scripts to your account on farm using: `scp .ssh/ClusterScripts/myscript.R username@farm.cse.ucdavis.edu:~/myproject/myscript.R` and `scp .ssh/ClusterScripts/myscript.sh username@farm.cse.ucdavis.edu:~/myproject/myscript.sh`. Each time, you'll be asked for your passphrase to farm. Alternatively, if you only have the 2 scripts in your folder, you could use `scp .ssh/ClusterScripts/* username@farm.cse.ucdavis.edu:~/myproject/`, which will copy over all files inside ClusterScripts.
 
-e. When your job finishes successfully, the output should be in /home/username/myproject. To move it to your computer, you must first log out of your farm account using "exit" (if you're logged in), and then use the command "scp username@farm.cse.ucdavis.edu:~/myproject/myworkspace.RData .ssh/ClusterScripts/myworkspace.RData"
+e. When your job finishes successfully, the output should be in /home/username/myproject. To move it to your computer, you must first log out of your farm account using `exit` (if you're logged in), and then use the command `scp username@farm.cse.ucdavis.edu:~/myproject/myworkspace.RData .ssh/ClusterScripts/myworkspace.RData`
 
 #####Submitting jobs on farm
 This is covered in greater detail below, but generally all you need to do is:
 
-a. Log into your farm account and navigate to the folder with your shell script ("cd myproject")
+a. Log into your farm account and navigate to the folder with your shell script (`cd myproject`)
 
-b. Run your shell script using "sbatch -p serial -N 1 -n 8 myscript.sh", which will in turn run your R script in the same folder. If you set up your scripts as described above, this command should work. If you want to play around with it, read the section on submitting jobs below.
+b. Run your shell script using `sbatch -p serial -N 1 -n 8 myscript.sh`, which will in turn run your R script in the same folder. If you set up your scripts as described above, this command should work. If you want to play around with it, read the section on submitting jobs below.
 
-c. After a few seconds, enter the command "squeue" to see a list of running jobs; if your shell scripts ran fine, you should be able to see your job. If not, refer to the .Rout and .txt output files in /home/username/myproject. 
+c. After a few seconds, enter the command `squeue` to see a list of running jobs; if your shell scripts ran fine, you should be able to see your job. If not, refer to the .Rout and .txt output files in /home/username/myproject. 
 
 
 
