@@ -68,9 +68,110 @@ f. Your keys are located in the .ssh folder in your home directory:
 
 g. Your public key is in a file called `id_rsa.pub`. Attach this file to the email you send to CSE Help.
 
-#####Windows:
-a. Follow the steps here:
-<http://siteadmin.gforge.inria.fr/ssh_windows.html>
+#####Windows
+A good way to create a key and interface with farm on Windows is using Git Bash (download instructions here: <https://openhatch.org/missions/windows-setup/install-git-bash>). You may be able to just use the Windows command prompt for connecting with farm, but I'm not sure if/how well that works (in that case, you can create an SSH key by following instructions here: <http://siteadmin.gforge.inria.fr/ssh_windows.html>).
+
+a. After installing, open up Git Bash (not Git GUI). You should start out in your home directory (something like /c/Users/Username/); you can check by entering "pwd" (without quotes) in the command line. Create a folder here to hold the ssh keys via "mkdir .ssh", and then go to the folder via "cd .ssh".
+
+b. Create the key using "ssh-keygen -b 2048 -t rsa". Hit Enter on the next question without typing anything - you want to use the default file name for the keys (id_rsa and id_rsa.pub) to avoid potential problems with logging into your farm account in Git Bash.
+
+c. Key in a passphrase.
+
+d. You should see something very similar to that in Macs shown above, and you'll now have a key pair in /c/Users/Username/.ssh. Go to <https://wiki.cse.ucdavis.edu/cgi-bin/index2.pl>, fill out the short web form (choosing your OS, graduate lab, etc), attach your public key (id_rsa.pub), and submit it. If your lab isn't listed, you can still use farm - just refer to the documentation here: <https://wiki.cse.ucdavis.edu/support:systems:farm>.
+
+
+
+###Quick start guide (an example with R running from Windows with Git Bash)
+
+####Basic files I: Shell script
+This is a very small script which just tells farm where you want to store files, which program(s) you'll need, and where to find the scripts for your main task. On a very basic level, the lines below are all that you need in a .sh file to run an R script:
+
+```sh
+	#!/bin/bash -l
+	#SBATCH -D /home/username/myproject/
+	#SBATCH -o /home/username/myproject/name-stdout-%j.txt
+	#SBATCH -J name
+		
+	module load gcc R
+	R CMD BATCH StochDetBfnGammas.R
+```
+
+A few comments: the first line just establishes what syntax these commands are using (in this case bash)
+
+-D: This sets your working directory. This is where your .sh and .R scripts will be located, and this is also where farm will store a history of the console (for R, it will be a .Rout file, which you can view in a text editor). This file can be very useful to check if anything went wrong within R while running the script (eg, missing libraries or packages).
+
+-o: This just sets up the name+place of a small text file which contains feedback from running the .sh script. It may be helpful to check this file if your job doesn't run - for example, to see if you're calling an invalid or unavailable program.
+
+The last 2 lines load the programs you need (for R, its gcc and R), and which script you'll be running in them.
+
+
+####Basic files II: R script
+There are a few commands which you probably don't use very often, but which will be needed to run the R script on farm. Here is the basic structure of a script you might use:
+
+First, we tell R where to install and/or find preinstalled packages. This needs to be a folder which you create beforehand in the home directory of your farm account.
+
+` .libPaths( "/home/username/MyPackages" )`
+
+Now lets install the packages we need. Add/remove any that you need from this list, and be sure to specify the repository (probably just cran).
+
+`install.packages(c('doParallel','foreach','deSolve'), repos='http://cran.us.r-project.org')`
+
+After the first time you run a script with the line above, the packages will be installed in your R library on farm, and in the future you can just comment out/remove the line above, and load them as usual.
+
+`library(doParallel); library(foreach); library(deSolve);`
+
+
+Below you'll set up the parameters and functions needed for the simulation. You'll most likely want to paralellize your code so you can use >1 core simultaneously. There's extensive documentation on how to do this online, but since most people love for() loops, here's an example of how they can be parallelized using the foreach package; for explanations of what everything is, look through <https://cran.r-project.org/web/packages/foreach/vignettes/foreach.pdf>.
+First though we need to set up the parallel environment. There are multiple ways of doing this. Since we're using foreach, to do this we'll need a function from the doParallel packages. Here you specify the number of cores you'll need to use; if you're not sure, use 8 (# of processors on a single node). If you want >8, you'll need to use multiple nodes; read up on how to do that, eg in the CSE wiki.
+
+`registerDoParallel(cores=8)`
+
+Now we can call the foreach function, which will parallelize the simulation code inside it. Note the need to pass foreach() any packages you need, choose the appropriate function to combine the output, etc.
+
+`output = foreach(k = (1:10), .packages="deSolve", .combine=rbind) %dopar% { ... }#simulation code in brackets`
+
+
+Then do any transformations you want to the output. There are several options on how to save the output - for example, if all you want out is a single object (vector, matrix, array), you can save the object using saveRDS() and then read it into R on your computer after moving it there. Alternatively, you can save the whole working environment and then continue transforming/graphing the results on your own computer. However, in that case, you may run into compatibility issues if you're running a different version of R than farm.
+In either case, first specify the location in your home directory on farm where the files will be saved (you can't access files on your PC from the R session on farm).
+
+`setwd("/home/username/myproject")`
+`save(list=ls(all=TRUE), file="myworkspace.RData")`
+`saveRDS(output, "myresults.rds")`
+
+		
+####Bare basics of running jobs on farm
+Here, well briefly go over the basics of connecting to farm, moving files between your PC and farm, and submitting jobs. A wonderful resource to look/work through to get familiar with the syntax is: <http://cli.learncodethehardway.org/book/>.
+
+#####First time in farm
+a. Connect to farm using the ssh command: "ssh username@farm.cse.ucdavis.edu". Hereafter, don't include the quotes when typing in commands; also, CSE will email you the address you should use once your account is activated. Key in your passphrase when prompted. The passphrase is hidden, so no text will show up when you do this and it'll seem like your keyboard is broken; it's fine.
+
+b. You should see a series of messages, and after that you'll be in your home directory on farm: /home/username/. You can verify this via print working directory - "pwd"
+
+c. Now lets make 2 folders we referenced earlier in the .sh and .R scripts. You can structure this any way you like; I ran one command for the scripts+outputs folder on my current project ("mkdir myproject") and one command to make a folder for all my R packages ("mkdir MyPackages").
+
+d. Enter the command "ls". You should still be in your home directory, and this will show all the files/folders in there. You should see two items: "myproject" and "MyPackages".
+
+#####Moving files between farm and your computer
+a. To do this, you'll need to log out of farm - use the "exit" command. If you were in the home directory on your PC before logging on (/c/Users/Username/ in Windows), you should still be there - use "pwd" to check.
+
+b. If you're new to Linux, it may be helpful to make a new folder near your home directory where we could store all our .sh and .R scripts. I created a new folder in the .ssh folder for this using "mkdir .ssh/ClusterScripts". I will reference this path in future commands, but this could be any folder on your computer.
+
+c. (maybe optional) A common issue on Windows machines is that they tend to save script files in DOS format, whereas farm needs them to be in unix format. To be safe, you can easily fix this via the Git Bash terminal. Simply (1) navigate to the folder with scripts "cd .ssh/ClusterScripts", and (2) run the commands "dos2unix *.sh" and "dos2unix *.R" (* is a 'wildcard' character - that is, any files ending with .R or .sh, like our scripts, will be converted). You  should see something like "dos2unix: converting file myscript.sh to UNIX format ..."
+
+d. Now move the scripts to your account on farm using: "scp .ssh/ClusterScripts/myscript.R username@farm.cse.ucdavis.edu:~/myproject/myscript.R" and "scp .ssh/ClusterScripts/myscript.sh username@farm.cse.ucdavis.edu:~/myproject/myscript.sh". Each time, you'll be asked for your passphrase to farm. Alternatively, if you only have the 2 scripts in your folder, you could use "scp .ssh/ClusterScripts/* username@farm.cse.ucdavis.edu:~/myproject/", which will copy over all files inside ClusterScripts.
+
+e. When your job finishes successfully, the output should be in /home/username/myproject. To move it to your computer, you must first log out of your farm account using "exit" (if you're logged in), and then use the command "scp username@farm.cse.ucdavis.edu:~/myproject/myworkspace.RData .ssh/ClusterScripts/myworkspace.RData"
+
+#####Submitting jobs on farm
+This is covered in greater detail below, but generally all you need to do is:
+
+a. Log into your farm account and navigate to the folder with your shell script ("cd myproject")
+
+b. Run your shell script using "sbatch -p serial -N 1 -n 8 myscript.sh", which will in turn run your R script in the same folder. If you set up your scripts as described above, this command should work. If you want to play around with it, read the section on submitting jobs below.
+
+c. After a few seconds, enter the command "squeue" to see a list of running jobs; if your shell scripts ran fine, you should be able to see your job. If not, refer to the .Rout and .txt output files in /home/username/myproject. 
+
+
 
 
 ###Farm Defaults:
