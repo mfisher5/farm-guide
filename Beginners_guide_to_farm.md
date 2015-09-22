@@ -134,10 +134,11 @@ Now we can call the foreach function, which will parallelize the simulation code
 Then do any transformations you want to the output. There are several options on how to save the output - for example, if all you want out is a single object (vector, matrix, array), you can save the object using saveRDS() and then read it into R on your computer after moving it there. Alternatively, you can save the whole working environment and then continue transforming/graphing the results on your own computer. However, in that case, you may run into compatibility issues if you're running a different version of R than farm.
 In either case, first specify the location in your home directory on farm where the files will be saved (you can't access files on your PC from the R session on farm).
 
-`setwd("/home/username/myproject")`
-`save(list=ls(all=TRUE), file="myworkspace.RData")`
-`saveRDS(output, "myresults.rds")`
-
+``` r
+setwd("/home/username/myproject")
+save(list=ls(all=TRUE), file="myworkspace.RData")
+saveRDS(output, "myresults.rds")
+```
 		
 ####Bare basics of running jobs on farm
 Here, well briefly go over the basics of connecting to farm, moving files between your PC and farm, and submitting jobs. A wonderful resource to look/work through to get familiar with the syntax is: <http://cli.learncodethehardway.org/book/>.
