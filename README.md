@@ -27,8 +27,15 @@ Make your life a little easier by adding the following to `~/.ssh/config`:
         HostName agri.cse.ucdavis.edu
         User username
 
-Replace `username` with your username. This will allow you to ssh to
+    Host farm-cp
+     	User youruser
+     	HostName farm.cse.ucdavis.edu
+     	Port 2022
+
+Replace `username` with your username. The first group of lines will allow you to ssh to
 farm with just `ssh farm` in the future.
+The second group is for copying files to and from farm using the recommended port (so as not to burden the head node with network IO).
+Use `scp <file on my computer> farm-cp:<location on farm>` to copy files (or use `rsync` as described [in Jeff's lab wiki](https://github.com/RILAB/lab-docs/wiki/Using-Farm)
 
 ## Getting to Know Slurm
 
