@@ -10,6 +10,8 @@ Farm1 called Slurm. Most of
 is still relevant, up until
 [how we submit jobs](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
 
+See also the Farm Intro at [https://mcmaurer.github.io/farm-cluster-intro/](https://mcmaurer.github.io/farm-cluster-intro/)
+
 ## Connecting to Farm2
 
 The address is `username@agri.cse.ucdavis.edu`. `username` here will
