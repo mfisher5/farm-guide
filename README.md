@@ -5,12 +5,14 @@
 ![enjoy-slurm](http://i.imgur.com/9MG5aig.png)
 
 Farm2 is runs on a different cluster workload management system than
-Farm1 called Slurm. Most of
-[our existing documenation](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md)
-is still relevant, up until
-[how we submit jobs](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm).
+Farm1 called Slurm. 
 
-See also the Farm Intro at [https://mcmaurer.github.io/farm-cluster-intro/](https://mcmaurer.github.io/farm-cluster-intro/)
+Most of
+[our existing documentation](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md)
+is still relevant for Farm2, up until
+[how we submit jobs](https://github.com/BaskettLab/farm-guide/blob/master/Beginners_guide_to_farm.md#submitting-jobs-to-farm). This documentation has been updated for Farm 2 [for Windows users only](https://github.com/mfisher5/farm-guide/blob/master/Beginners_guide_to_farm_Windows.md).
+
+See also the Farm Intro at [https://mcmaurer.github.io/farm-cluster-intro/](https://www.michaelc-m.com/farm-cluster-intro/)
 
 ## Connecting to Farm2
 

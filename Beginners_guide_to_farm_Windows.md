@@ -1,6 +1,11 @@
-#Beginner's guide to farm
+# Beginner's guide to farm for Windows
 
-updated in 09/2024 based on Michael Culshaw-Maurer's [farm cluster info webpage](https://www.michaelc-m.com/farm-cluster-intro/)
+
+Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
+
+Farm has a **head node** , which controls the cluster, and **compute nodes** which is where the action happens. For the most part, you interact with Farm using scripts to launch jobs on the compute nodes; you don't run processes on the head node and you don't log into the compute nodes directly.
+
+This doc was updated 09/2024 based on Michael Culshaw-Maurer's [farm cluster info webpage](https://www.michaelc-m.com/farm-cluster-intro/) and the UCD Data Science Training tutorials.
 
 ##### UC Davis Resources
 
@@ -13,48 +18,17 @@ https://hpc.ucdavis.edu/helpdocs
 Data Science Training tutorials:
 https://ngs-docs.github.io/2021-august-remote-computing/index.html 
 
-##Contents:
+## Contents:
 
-- Unix shell tips / basics
-- What is farm
 - Setting up your account
+- Unix shell tips / basics
 - Farm defaults
 - Installing programs on farm
 - Special farm things [scratch usage, tentakel]
 - Submit jobs to farm 
 
 
-##Unix shell tips / basics:
-
-Some terminology: The language *Linux* is run by typing commands and responding to prompts in the *command line*; the *command line* exists in a *terminal* program. The bash *shell* interprets the text commands from the command line for the computer.
-
-The existing FARM documentation may be easier to follow using the **Git Bash** terminal [download instructions here](<https://openhatch.org/missions/windows-setup/install-git-bash>), compared to the Windows command line. IT has approved git bash for use on school computers.
-
-In addition to opening a git bash terminal window, RStudio has a "Terminal" tab - check the Tools >> Terminal >> "Terminal Options" to confirm if its using git bash. 
-
-![img-rstudio-terminal]()
-
-Send a command in this document to the terminal by highlighting it and then using the keys Alt+Ctrl+Enter.
-
-Some basic bash commands:
-```sh
-git -v        # check git version
-bash -version # check bash version
-pwd           # what is the working directory
-ls -a         # list all the files in the working directory
-mkdir test    # create a new folder in the working directory
-cd test       # go into that new folder
-cd ../        # return up to working directory
-rmdir test    # delete the test folder
-```
-
-##What is farm:
-
-Farm is a computer cluster that runs a distribution of Linux called CentOS version 5.8. 
-
-Farm has a **head node** , which controls the cluster, and **compute nodes** which is where the action happens. For the most part, you interact with Farm using scripts to launch jobs on the compute nodes; you don't run processes on the head node and you don't log into the compute nodes directly.
-
-##Setting up your account:
+## Setting up your account:
 
 ### Account Request form
 
@@ -93,10 +67,71 @@ c. Key in a passphrase and hit Enter. Nothing will show up on the screen, that's
 d. You should see something very similar to that in Macs shown above, and you'll now have a key pair in /c/Users/Username/.ssh. Go to <https://wiki.cse.ucdavis.edu/cgi-bin/index2.pl>, fill out the short web form (choosing your OS, graduate lab, etc), attach your public key (id_rsa.pub), and submit it. 
 
 
+## Unix shell tips / basics:
 
-###Quick start guide
+Some terminology: The language *Linux* is run by typing commands and responding to prompts in the *command line*; the *command line* exists in a *terminal* program. The bash *shell* interprets the text commands from the command line for the computer.
 
-####Basic files I: Shell script
+The existing FARM documentation may be easier to follow using the **Git Bash** terminal [download instructions here](<https://openhatch.org/missions/windows-setup/install-git-bash>), compared to the Windows command line. IT has approved git bash for use on school computers.
+
+In addition to opening a git bash terminal window, RStudio has a "Terminal" tab - check the Tools >> Terminal >> "Terminal Options" to confirm if its using git bash. 
+
+![img-rstudio-terminal](https://github.com/mfisher5/farm-guide/blob/master/imgs/rstudio-terminal-screenshot.png?raw=true)
+
+Send a command in this document to the terminal by highlighting it and then using the keys Alt+Ctrl+Enter.
+
+Some basic bash commands:
+```sh
+git -v, , # check git version
+bash -version # check bash version
+pwd, ,    # what is the working directory
+ls -a, ,  # list all the files in the working directory
+mkdir test, # create a new folder in the working directory
+cd test,    # go into that new folder
+cd ../, , # return up to working directory
+rmdir test, # delete the test folder
+cat, ,    # print the contents of a file to the terminal
+```
+
+Helpful tips -- 
+
+- when typing in a directory or file name into the command line, you can auto-complete the name by hitting tab
+
+- you can't use ctrl-c / ctrl-v shortcuts to copy and paste on the command line, you have to right click - copy / paste.
+
+### nano: Editing text files
+
+Both the UCD docs and the Culshaw-Maurer webpage use `nano` to create and modify text files from the command line. This is a command line program standard to most Linux systems; I have it on git bash and therefore my terminal in RStudio.
+
+Check to see if you have nano:
+
+```
+nano --version
+
+>>  GNU nano, version 7.2
+ (C) 2023 the Free Software Foundation and various contributors
+ Compiled options: --enable-utf8
+```
+
+This should open a text editor window
+
+```
+cd ../ # return to main farm-guide directory, from the R directory
+nano README.md
+```
+
+Exit by typing CTRL-X. When you do this, nano will ask if you want to save the modified file. If you say “No”, it will not save; if you type ‘y’, it will ask you for the name of the file. Just hit ENTER to overwrite the file you edited here.
+
+
+There is a list of letter-based commands below the lines of the file that nano prints to the screen.
+
+^G Help,  ^O Write Out, ^W Where Is,  ^K Cut,   ^T Execute, ^C Location,  M-U Undo, M-A Set Mark, M-] To Bracket  M-Q Previous, ^B Back
+^X Exit,  ^R Read File, ^\ Replace,   ^U Paste, ^J Justify, ^/ Go To Line, M-E Redo, M-6 Copy, ^Q Where Was, M-W Next, ^F Forward
+
+You can do the full [UCD tutorial here](https://ngs-docs.github.io/2021-august-remote-computing/creating-and-modifying-text-files-on-remote-computers.html)
+
+
+### Basic files I: Shell script
+
 This is a very small script which just tells farm where you want to store files, which program(s) you'll need, and where to find the scripts for your main task. On a very basic level, the lines below are all that you need in a .sh file to run an R script:
 
 ```sh
@@ -106,7 +141,7 @@ This is a very small script which just tells farm where you want to store files,
 	#SBATCH -J name
 		
 	module load gcc R
-	R CMD BATCH StochDetBfnGammas.R
+	R CMD BATCH myRscript.R
 ```
 
 A few comments: the first line just establishes what syntax these commands are using (in this case bash)
@@ -117,8 +152,75 @@ A few comments: the first line just establishes what syntax these commands are u
 
 The last 2 lines load the programs you need (for R, its gcc and R), and which script you'll be running in them.
 
+Let's try out running an R script from a bash shell on your local PC! Create an R script that just prints "Hello world."
 
-####Basic files II: R script
+```
+# mkdir R
+
+cd R
+
+ls
+>> test_hello.R
+
+cat test_hello.R
+>> message("hello world!")
+```
+
+Customize the basic .sh that you need to run an R script, outlined above. Here's what mine looks like:
+
+```
+ls
+>> test_hello.R  test_hello.sh*
+
+cat test_hello.sh
+>> #!/bin/bash -l
+   #SBATCH -D ~/OneDrive - University of California, Davis/Documents/farm-guide
+   #SBATCH -o ~/OneDrive - University of California, Davis/Documents/farm-guide/R/test_hello-stdout-%j.txt
+   #SBATCH -J test_hello
+
+   # module load gcc R # hashed out to run locally
+   R CMD BATCH test_hello.R
+```
+
+What happens when we run it?
+
+```
+bash test_hello.sh
+
+cat test_hello.Rout
+
+>> R version 4.4.0 (2024-04-24 ucrt) -- "Puppy Cup"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> message("hello world!")
+hello world!
+>
+> proc.time()
+   user  system elapsed
+   0.00, 0.01, 0.12
+```
+
+
+
+### Basic files II: R script
+
 There are a few commands which you probably don't use very often, but which will be needed to run the R script on farm. Here is the basic structure of a script you might use:
 
 First, we tell R where to install and/or find preinstalled packages. This needs to be a folder which you create beforehand in the home directory of your farm account.
@@ -153,12 +255,71 @@ save(list=ls(all=TRUE), file="myworkspace.RData")
 saveRDS(output, "myresults.rds")
 ```
 
+
 		
-####Bare basics of running jobs on farm
+## Bare basics of running jobs on farm
 Here, well briefly go over the basics of connecting to farm, moving files between your PC and farm, and submitting jobs. A wonderful resource to look/work through to get familiar with the syntax is: <http://cli.learncodethehardway.org/book/>.
 
-#####First time in farm
-a. Connect to farm using the ssh command: `ssh username@farm.cse.ucdavis.edu`. Hereafter, don't include the quotes when typing in commands; also, CSE will email you the address you should use once your account is activated. Key in your passphrase when prompted. The passphrase is hidden, so no text will show up when you do this and it'll seem like your keyboard is broken; it's fine.
+### First time in farm
+
+#### a. Tell you computer that Farm is a 'known host.' 
+
+**This didn't work for me, but maybe it'll work for you**
+
+Make a file in the folder with your .ssh keys called 'config', that contains the following text:
+
+```
+VerifyHostKeyDNS yes
+Host farm
+  HostName agri.cse.ucdavis.edu
+  User your-user-name
+```
+
+Let's do that using nano from the command line.
+```
+cd
+cd keys # navigate to .ssh directory
+ls -a   # check what's in there
+>> farmkey.txt  farmkey.txt.pub  farmkey_terminal.txt
+
+nano config # use nano to make config file; type in text above on the command line, exit, and save
+
+ls -a      # is the new config file here?
+>> ./  ../  config  farmkey.txt  farmkey.txt.pub  farmkey_terminal.txt
+
+cat config # check file contents
+
+>> VerifyHostKeyDNS yes
+   Host farm
+        HostName agri.cse.ucdavis.edu
+        User marfishe
+```
+
+
+#### b. Ok, now we can connect to farm using the ssh command.
+
+If you successfully completed (a) above, you should be able to just type in:
+
+```
+ssh farm
+```
+
+If (a) didn't work for you, then you'll get a message  `>>> ssh: Could not resolve hostname farm: Name or service not known`
+ 
+
+Instead, type in: `username@farm.cse.ucdavis.edu` and say 'yes' when it asks if you want to continue connecting. Enter your password.
+
+```
+ssh marfishe@farm.cse.ucdavis.edu
+
+>>> The authenticity of host 'farm.cse.ucdavis.edu (128.120.146.1)' can't be established.
+>>> This key is not known by any other names.
+>>> Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+>>> marfishe@farm.cse.ucdavis.edu's password:
+```
+
+If you forget your username, log into your HIPPO account. In Account Details, go to data > groups > home. Whatever is after `/home/` is your username. So for example, mine is `/home/marfishe` because *marfishe* is my username.
+
 
 b. You should see a series of messages, and after that you'll be in your home directory on farm: /home/username/. You can verify this via print working directory - `pwd`
 
@@ -166,7 +327,8 @@ c. Now lets make 2 folders we referenced earlier in the .sh and .R scripts. You 
 
 d. Enter the command `ls`. You should still be in your home directory, and this will show all the files/folders in there. You should see two items: `myproject` and `MyPackages`.
 
-#####Moving files between farm and your computer
+
+### Moving files between farm and your computer
 a. To do this, you'll need to log out of farm - use the `exit` command. If you were in the home directory on your PC before logging on (`/c/Users/Username/` in Windows, `~` on Mac or unix-like), you should still be there - use `pwd` to check.
 
 b. If you're new to Linux, it may be helpful to make a new folder near your home directory where we could store all our .sh and .R scripts. I created a new folder in the .ssh folder for this using `mkdir .ssh/ClusterScripts`. I will reference this path in future commands, but this could be any folder on your computer.
@@ -177,7 +339,7 @@ d. Now move the scripts to your account on farm using: `scp .ssh/ClusterScripts/
 
 e. When your job finishes successfully, the output should be in /home/username/myproject. To move it to your computer, you must first log out of your farm account using `exit` (if you're logged in), and then use the command `scp username@farm.cse.ucdavis.edu:~/myproject/myworkspace.RData .ssh/ClusterScripts/myworkspace.RData`
 
-#####Submitting jobs on farm
+### Submitting jobs on farm
 This is covered in greater detail below, but generally all you need to do is:
 
 a. Log into your farm account and navigate to the folder with your shell script (`cd myproject`)
@@ -187,7 +349,7 @@ b. Run your shell script using `sbatch -p serial -N 1 -n 8 myscript.sh`, which w
 c. After a few seconds, enter the command `squeue` to see a list of running jobs; if your shell scripts ran fine, you should be able to see your job. If not, refer to the .Rout and .txt output files in /home/username/myproject. 
 
 
-###Farm Defaults:
+## Farm Defaults:
 Farm comes with a lot of software preinstalled. Here's a list of some of the most commonly used ones:
 
 * gcc
